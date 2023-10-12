@@ -1,26 +1,71 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-router-dom";
+import {Layout} from "./components/layout/layout";
+import {LoginForm} from "./components/auth/loginForm/loginForm";
+import {SignUpForm} from "./components/auth/signUpForm/signUpForm";
+import {Error404} from "./pages/error404/error404";
+import {Menu} from "./pages/menu/menu";
+import {Orders} from "./pages/orders/orders";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+export function App() {
+
+    const protectedRoutes = [
+        {
+            path: '/menu',
+            element: <Menu />,
+        },
+        {
+            path: '/orders',
+            element: <Orders />,
+        },
+        {
+            path: '/*',
+            element: <Error404 />,
+        },
+    ]
+
+    const router = createBrowserRouter([
+        {
+            path: '/',
+            element: <Layout />,
+            children: [
+                {
+                    element: <ProtectedRoutes />,
+                    children: protectedRoutes,
+                },
+                {
+                    path: '/signUp',
+                    element: <SignUpForm />,
+                },
+                {
+                    path: '/login',
+                    element: <LoginForm />,
+                },
+                // {
+                //     path: '/forgotPassword',
+                //     element: <ForgotPasswordForm />,
+                // },
+                // {
+                //     path: '/check-email',
+                //     element: <CheckEmail />,
+                // },
+                // {
+                //     path: '/create-new-password/:token',
+                //     element: <CreateNewPassword />,
+                // },
+            ],
+        },
+    ])
+
+    return <RouterProvider router={router} />
 }
 
-export default App;
+const ProtectedRoutes = () => {
+    // const { data, isLoading } = useMeQuery()
+
+    // if (isLoading) return <div>Loading...</div>
+
+    return true ? <Outlet /> : <Navigate to={'/login'} />
+}
+

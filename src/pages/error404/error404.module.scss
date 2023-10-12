@@ -1,0 +1,21 @@
+@use 'src/styles/mixins';
+
+.container {
+  @include mixins.flex(column, flex-start, center);
+
+  margin-top: 127px;
+  background-color: var(--color-dark-900);
+
+  .image {
+    margin-bottom: 32px;
+  }
+
+  .text {
+    margin-bottom: 28px;
+    color: var(--color-light-100);
+  }
+
+  .button_text {
+    color: var(--color-light-100);
+  }
+}

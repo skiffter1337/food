@@ -1,0 +1,46 @@
+@use 'src/styles/mixins';
+
+.card {
+  width: 26.25rem;
+  height: max-content;
+  margin-top: 36px;
+  padding: 33px 36px 29px;
+
+  .title {
+    margin-bottom: 27px;
+    color: var(--color-light-100);
+    text-align: center;
+  }
+
+  .text_field {
+    margin-bottom: 24px;
+  }
+
+  .text_field_last {
+    margin-bottom: 60px;
+  }
+
+  .submit_button {
+    margin-bottom: 20px;
+
+    .submit_button_text {
+      color: var(--color-light-100);
+    }
+  }
+
+  .have_account {
+    margin-bottom: 11px;
+    color: var(--color-light-900);
+    text-align: center;
+  }
+
+  .sign_in_button_container {
+    @include mixins.flex(row, center, center);
+
+    .sign_in_button_text {
+      color: var(--color-accent-500);
+      text-decoration: underline;
+      text-decoration-skip-ink: none;
+    }
+  }
+}
