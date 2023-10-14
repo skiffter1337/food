@@ -1,4 +1,4 @@
-@use 'src/styles/mixins';
+@use '../../styles/mixins';
 
 .container {
   @include mixins.flex(column, flex-start, center);

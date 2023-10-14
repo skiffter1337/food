@@ -1,0 +1,66 @@
+@use 'src/styles/mixins';
+
+.container {
+  @include mixins.flex(row, flex-start, center);
+
+  .wrapper {
+    @include mixins.flex(row, center, center);
+
+    width: 2.375rem;
+    height: 2.375rem;
+    border-radius: 50%;
+
+    &:active {
+      background-color: var(--color-dark-100);
+    }
+
+    &:hover {
+      background-color: var(--color-dark-500);
+    }
+
+    &:focus-within {
+      background-color: var(--color-dark-100);
+    }
+
+    .root {
+      @include mixins.flex(row, center, center);
+
+      cursor: pointer;
+
+      box-sizing: border-box;
+      width: 18px;
+      height: 18px;
+
+      background-color: transparent;
+      border: 2px solid var(--color-light-900);
+      border-radius: 2px;
+
+      &.small {
+        width: 12px;
+        height: 12px;
+      }
+
+      &:disabled {
+        border: 2px solid var(--color-dark-100);
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      .indicator {
+        @include mixins.flex(row, center, center);
+      }
+    }
+  }
+
+  .label {
+    user-select: none;
+    margin-left: 0.1875rem;
+    color: var(--color-light-100);
+  }
+
+  .disabled {
+    color: var(--color-dark-100);
+  }
+}

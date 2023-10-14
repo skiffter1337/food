@@ -1,17 +1,32 @@
-import {FC} from 'react'
 import LOGO from '../../../images/png_jpg/logo.jpg'
 import s from './header.module.scss'
 import {Button} from "../../ui/button/button";
 import {Typography} from "../../ui/typography/typography";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {selectIsLoggedIn} from "../../auth/auth.selector";
+import {useActions} from "../../../hooks/useActions";
+import {authThunks} from "../../auth/auth.slice";
+import {useEffect} from "react";
+import {menuApi} from "../../menu/menu.api";
 
 
-export type HeaderPropsType = {
-    isLoggedIn?: boolean
-    logout: () => void
-}
-export const Header: FC<HeaderPropsType> = ({logout, isLoggedIn}) => {
-    const handleLogout = () => logout()
+
+export const Header= () => {
+
+    useEffect(() => {
+        menuApi.getMenu().then((res) => {
+            console.log(res)
+        })
+    }, [])
+
+    const navigate = useNavigate()
+    const {logout} = useActions(authThunks)
+    const handleLogout = async  () => {
+        await logout({isLoggedIn: false})
+        navigate('/login')
+    }
+    const isLoggedIn = useSelector(selectIsLoggedIn)
 
     return (
         <div className={s.header}>
@@ -32,7 +47,7 @@ export const Header: FC<HeaderPropsType> = ({logout, isLoggedIn}) => {
                                     Orders
                                 </Typography>
                             </Button>
-                            <Button variant="primary" as={NavLink} to={'/login'}>
+                            <Button variant="primary" onClick={handleLogout}>
                                 <Typography variant={'subtitle2'} className={s.button_text}>
                                     Logout
                                 </Typography>

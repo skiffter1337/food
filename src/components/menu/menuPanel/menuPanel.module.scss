@@ -1,0 +1,15 @@
+
+.manage_categories_buttons {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  white-space: nowrap;
+  gap: 20px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
+}
+.text_color_white  {
+  color: var(--color-light-100);
+}

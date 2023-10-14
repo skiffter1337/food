@@ -1,24 +1,18 @@
-import { Outlet, useNavigate } from 'react-router-dom'
-
-
+import {Outlet} from 'react-router-dom'
 import s from './laytout.module.scss'
 import {Header} from "./header/header";
+import {toast, ToastContainer} from "react-toastify";
+import React from "react";
+
 export const Layout = () => {
 
-    const navigate = useNavigate()
-
-    const logoutHandler = () => {
-        //     logout().then(() => {
-        //         navigate('/login')
-        //     })
-        // }
-    }
     return (
         <>
-            <Header isLoggedIn={true} logout={logoutHandler} />
+            <Header />
             <div className={s.outlet}>
                 <Outlet />
             </div>
+            <ToastContainer/>
         </>
     )
 }

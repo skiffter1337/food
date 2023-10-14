@@ -5,13 +5,20 @@ import {authApi, LoginParamsType} from "./auth.api";
 
 export const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
     'auth/login',
-    async (arg, { rejectWithValue, dispatch }) => {
+    async (arg, {rejectWithValue, dispatch}) => {
         const res = await authApi.login(arg);
-        console.log(res)
-            return rejectWithValue(res.data);
+        localStorage.setItem('token', res.data.token)
+        return {isLoggedIn: true}
     }
 );
 
+export const logout = createAppAsyncThunk<{ isLoggedIn: boolean }>(
+    'auth/logout',
+     () => {
+        localStorage.removeItem('token')
+        return {isLoggedIn: false};
+    }
+);
 
 
 const slice = createSlice({
@@ -20,12 +27,21 @@ const slice = createSlice({
         isLoggedIn: false
     },
     reducers: {
-          setIsLoggedIn(state, action: PayloadAction<{isLoggedIn: boolean}>) {
-              state.isLoggedIn = action.payload.isLoggedIn
-          }
+        setIsLoggedIn(state, action: PayloadAction<{ isLoggedIn: boolean }>) {
+            state.isLoggedIn = action.payload.isLoggedIn
+        }
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(login.fulfilled, (state, action) => {
+                state.isLoggedIn = action.payload.isLoggedIn;
+            })
+            .addCase(logout.fulfilled, (state, action) => {
+                state.isLoggedIn = action.payload.isLoggedIn
+            })
     }
 })
 
 export const authSlice = slice.reducer
 export const authActions = slice.actions
-export const authThunks = { login };
+export const authThunks = {login, logout};

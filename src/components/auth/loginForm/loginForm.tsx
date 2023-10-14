@@ -2,11 +2,15 @@ import {NavLink, useNavigate} from 'react-router-dom'
 import s from './loginForm.module.scss'
 import {Typography} from "../../ui/typography/typography";
 import {Button} from '../../ui/button/button';
-import {Card} from "../../ui/card/card";
 import {useLoginForm} from "./useLoginForm";
 import {ControlledInput} from "../../ui/controlled/controlledInput";
 import {useActions} from "../../../hooks/useActions";
 import {authThunks} from "../auth.slice";
+import {toast} from "react-toastify";
+import {toastSuccess} from "../../../helpers/toastVariants/success/success";
+import {Card} from "../../ui/card/card";
+
+
 
 
 export const LoginForm = () => {
@@ -16,6 +20,7 @@ export const LoginForm = () => {
     const {handleSubmit, control} = useLoginForm()
     const onSubmit = handleSubmit(async data => {
         await login(data)
+        toast.success('You are successfully signed in!', toastSuccess)
         navigate('/')
     })
 

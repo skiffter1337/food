@@ -1,0 +1,159 @@
+@use 'src/styles/mixins';
+
+.large {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-xxl),
+    var(--font-weight-bold),
+    var(--color-dark-900),
+    var(--line-height-l)
+  );
+
+  margin: 0;
+}
+
+.h1 {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-xl),
+    var(--font-weight-bold),
+    var(--color-dark-900),
+    var(--line-height-l)
+  );
+
+  margin: 0;
+}
+
+.h2 {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-l),
+    var(--font-weight-bold),
+    var(--color-dark-900),
+    var(--line-height-m)
+  );
+
+  margin: 0;
+}
+
+.h3 {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-m),
+    var(--font-weight-bold),
+    var(--color-dark-900),
+    var(--line-height-m)
+  );
+
+  margin: 0;
+}
+
+.body1 {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-m),
+    var(--font-weight-regular),
+    var(--color-dark-900),
+    var(--line-height-m)
+  );
+
+  margin: 0;
+}
+
+.subtitle1 {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-m),
+    var(--font-weight-bold),
+    var(--color-dark-900),
+    var(--line-height-m)
+  );
+
+  margin: 0;
+}
+
+.body2 {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-s),
+    var(--font-weight-regular),
+    var(--color-dark-900),
+    var(--line-height-m)
+  );
+
+  margin: 0;
+}
+
+.subtitle2 {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-s),
+    var(--font-weight-bold),
+    var(--color-dark-900),
+    var(--line-height-m)
+  );
+
+  margin: 0;
+}
+
+.caption {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-xs),
+    var(--font-weight-regular),
+    var(--color-dark-900),
+    var(--line-height-s)
+  );
+
+  margin: 0;
+}
+
+.overline {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-xs),
+    var(--font-weight-bold),
+    var(--color-dark-900),
+    var(--line-height-s)
+  );
+
+  margin: 0;
+}
+
+.link1 {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-s),
+    var(--font-weight-regular),
+    var(--color-info-500),
+    var(--line-height-m),
+    underline
+  );
+
+  margin: 0;
+}
+
+.link2 {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-xs),
+    var(--font-weight-regular),
+    var(--color-info-500),
+    var(--line-height-s),
+    underline
+  );
+
+  margin: 0;
+}
+
+.error {
+  @include mixins.text-styles(
+    var(--font-family-primary),
+    var(--font-size-xs),
+    var(--font-weight-regular),
+    var(--color-danger-300),
+    var(--line-height-s)
+  );
+
+  margin: 0;
+}

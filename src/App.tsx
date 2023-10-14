@@ -3,9 +3,11 @@ import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-route
 import {Layout} from "./components/layout/layout";
 import {LoginForm} from "./components/auth/loginForm/loginForm";
 import {SignUpForm} from "./components/auth/signUpForm/signUpForm";
-import {Error404} from "./pages/error404/error404";
-import {Menu} from "./pages/menu/menu";
-import {Orders} from "./pages/orders/orders";
+import {Error404} from "./components/error404/error404";
+import {Menu} from "./components/menu/menu";
+import {Orders} from "./components/orders/orders";
+import {selectIsLoggedIn} from "./components/auth/auth.selector";
+import {useAppSelector} from "./hooks/useAppSelector";
 
 
 export function App() {
@@ -42,18 +44,6 @@ export function App() {
                     path: '/login',
                     element: <LoginForm />,
                 },
-                // {
-                //     path: '/forgotPassword',
-                //     element: <ForgotPasswordForm />,
-                // },
-                // {
-                //     path: '/check-email',
-                //     element: <CheckEmail />,
-                // },
-                // {
-                //     path: '/create-new-password/:token',
-                //     element: <CreateNewPassword />,
-                // },
             ],
         },
     ])
@@ -62,10 +52,9 @@ export function App() {
 }
 
 const ProtectedRoutes = () => {
-    // const { data, isLoading } = useMeQuery()
 
-    // if (isLoading) return <div>Loading...</div>
+    const isLoggedIn= useAppSelector(selectIsLoggedIn)
 
-    return true ? <Outlet /> : <Navigate to={'/login'} />
+    return isLoggedIn ? <Outlet /> : <Navigate to={'/login'} />
 }
 
