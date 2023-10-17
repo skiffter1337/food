@@ -10,6 +10,7 @@ import {AddNewCategoryModal} from "../../ui/modal/addNewCategoryModal/addNewCate
 import {DeleteCategoryModal} from "../../ui/modal/deleteCategoryModal/deleteCategoryModal";
 import {useAppSelector} from "../../../hooks/useAppSelector";
 import {selectCategories} from "../menuList/categories/categories.selector";
+import {AddNewGoodModal} from "../../ui/modal/addNewGoodModal/addNewGoodModal";
 
 type MenuPanelPropsType = {
     setCurrentCategoryId: (id: number) => void
@@ -17,9 +18,8 @@ type MenuPanelPropsType = {
 }
 export const MenuPanel: FC<MenuPanelPropsType> = ({setCurrentCategoryId, currentCategoryId}) => {
 
-
     const categories = useAppSelector(selectCategories)
-    const currentCategoryName = '123' // TODO fix error, добавить id в табы, а value сделать именем категории
+    const currentCategoryName = categories.filter(cat => cat.id === currentCategoryId)[0]?.categoryName
 
     const tabs = categories.length > 0 && [{
         value: '0',
@@ -46,13 +46,23 @@ export const MenuPanel: FC<MenuPanelPropsType> = ({setCurrentCategoryId, current
                     }/>
                 <DeleteCategoryModal
                     width={'narrow'}
-                    trigger={<Button variant={'secondary'} disabled={!tabs}>
+                    trigger={<Button variant={'secondary'} disabled={!tabs || currentCategoryId === 0}>
                         <Typography variant={'subtitle2'} className={s.text_color_white}>
                             Удалить категорию
                         </Typography>
                     </Button>}
                     currentCategoryName={currentCategoryName}
                     currentCategoryId={currentCategoryId}
+                />
+                <AddNewGoodModal
+                    width={'wide'}
+                    trigger={
+                        <Button variant={'secondary'} disabled={categories.length === 0}>
+                            <Typography variant={'subtitle2'} className={s.text_color_white}>
+                                Добавить товар
+                            </Typography>
+                        </Button>
+                    }
                 />
                 <Button variant={'secondary'}>
                     <Cart color={'var(--color-light-100)'}/>
@@ -62,7 +72,8 @@ export const MenuPanel: FC<MenuPanelPropsType> = ({setCurrentCategoryId, current
                 </Button>
             </div>
             {tabs ?
-                <TabSwitcher tabs={tabs} defaultValue={'0'} callback={(value) => setCurrentCategoryId(parseInt(value))}/>
+                <TabSwitcher tabs={tabs} defaultValue={'0'}
+                             callback={(value) => setCurrentCategoryId(parseInt(value))}/>
                 :
                 <NoItems>
                     Нет категорий

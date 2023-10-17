@@ -6,7 +6,6 @@ import {menuThunks, MenuType} from "../menu.slice";
 import {useActions} from "../../../hooks/useActions";
 import {TrashOutlined} from "../../../images/icons/trashOutlined/trashOutlined";
 import {NoItems} from "../../ui/noItems/noItems";
-import {current} from "@reduxjs/toolkit";
 
 export type MenuListType = {
     menu: MenuType[]
@@ -16,8 +15,7 @@ export type MenuListType = {
 export const MenuList: FC<MenuListType> = ({menu, currentCategoryId}) => {
 
     const {deleteItem} = useActions(menuThunks)
-
-    const filteredMenu = menu.filter(good => currentCategoryId === 0 ? good : good.categoryId === currentCategoryId)
+    const filteredMenu = menu.filter(good => currentCategoryId === 0 ? good : good?.categoryId === currentCategoryId)
 
     const mappedMenu = filteredMenu.map(good => {
         return (
@@ -28,7 +26,7 @@ export const MenuList: FC<MenuListType> = ({menu, currentCategoryId}) => {
                             {good.name}
                         </Typography>
                     </div>
-                    <div onClick={() => deleteItem(good.id)}>
+                    <div onClick={() => deleteItem(good.id)} className={s.delete_good}>
                         <TrashOutlined/>
                     </div>
                 </div>

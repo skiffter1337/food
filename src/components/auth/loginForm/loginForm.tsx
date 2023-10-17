@@ -9,15 +9,15 @@ import {authThunks} from "../auth.slice";
 import {toast} from "react-toastify";
 import {toastSuccess} from "../../../helpers/toastVariants/success/success";
 import {Card} from "../../ui/card/card";
-
-
+import {useSelector} from "react-redux";
+import {selectIsLoggedIn} from "../auth.selector";
 
 
 export const LoginForm = () => {
     const navigate = useNavigate()
     const {login} = useActions(authThunks)
-
     const {handleSubmit, control} = useLoginForm()
+
     const onSubmit = handleSubmit(async data => {
         await login(data)
         toast.success('You are successfully signed in!', toastSuccess)

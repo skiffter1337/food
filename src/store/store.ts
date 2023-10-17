@@ -4,8 +4,10 @@ import {configureStore} from "@reduxjs/toolkit";
 import {authSlice} from "../components/auth/auth.slice";
 import {menuSlice} from "../components/menu/menu.slice";
 import {categoriesSlice} from "../components/menu/menuList/categories/categories.slice";
+import {appSlice} from "../app/app.slice";
 
 export const rootReducer = combineReducers({
+    app: appSlice,
     auth: authSlice,
     menu: menuSlice,
     categories: categoriesSlice

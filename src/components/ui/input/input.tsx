@@ -1,7 +1,4 @@
-import { ChangeEvent, ComponentPropsWithoutRef, ReactNode, useState } from 'react'
-
-
-
+import {ChangeEvent, ComponentPropsWithoutRef, FC, ReactNode, useState} from 'react'
 import s from './input.module.scss'
 import {Typography } from '../typography/typography';
 import {EyeOffOutlined} from "../../../images/icons/eyeOffOutlined/eyeOffOutlined";
@@ -15,9 +12,9 @@ export type InputPropsType = {
     search?: boolean
     iconStart?: ReactNode
     iconEnd?: ReactNode
-    type?: 'text' | 'password'
+    type?: 'text' | 'password' | 'number'
     onClearClick?: () => void
-    onChange?: (text: ChangeEvent<HTMLInputElement>) => void
+    onChange?: (value: string | number) => void;
     value?: string
     disabled?: boolean
     placeholder?: string
@@ -26,7 +23,7 @@ export type InputPropsType = {
     className?: string
 } & ComponentPropsWithoutRef<'input'>
 
-export const Input: React.FC<InputPropsType> = ({
+export const Input:FC<InputPropsType> = ({
                                                     label,
                                                     errorMessage,
                                                     error,
@@ -45,7 +42,11 @@ export const Input: React.FC<InputPropsType> = ({
                                                 }) => {
     // test logic
     const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        onChange?.(event)
+        if (type === 'number') {
+            onChange?.(parseFloat(event.target.value));
+        } else {
+            onChange?.(event.target.value);
+        }
     }
     // test logic
 

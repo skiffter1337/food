@@ -13,17 +13,13 @@ import {selectCategories} from "./menuList/categories/categories.selector";
 export const Menu = () => {
 
     const [currentCategoryId, setCurrentCategoryId] = useState(0)
-
+    const [searchText, setSearchText] = useState('');
 
     const menu = useAppSelector(selectMenu)
-    const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const {getMenu} = useActions(menuThunks)
     const {getCategories} = useActions(categoriesThunks)
 
     useEffect(() => {
-        if (!isLoggedIn) {
-            return
-        }
         getCategories({})
         getMenu({})
     }, []);

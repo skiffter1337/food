@@ -7,18 +7,9 @@ import {useSelector} from "react-redux";
 import {selectIsLoggedIn} from "../../auth/auth.selector";
 import {useActions} from "../../../hooks/useActions";
 import {authThunks} from "../../auth/auth.slice";
-import {useEffect} from "react";
-import {menuApi} from "../../menu/menu.api";
-
 
 
 export const Header= () => {
-
-    useEffect(() => {
-        menuApi.getMenu().then((res) => {
-            console.log(res)
-        })
-    }, [])
 
     const navigate = useNavigate()
     const {logout} = useActions(authThunks)
@@ -39,24 +30,24 @@ export const Header= () => {
                         <>
                             <Button variant={'link'} as={NavLink} to={'/menu'}>
                                 <Typography variant={'h3'} className={s.button_text}>
-                                    Menu
+                                    Меню
                                 </Typography>
                             </Button>
                             <Button variant={'link'} as={NavLink} to={'/orders'}>
                                 <Typography variant={'h3'} className={s.button_text}>
-                                    Orders
+                                    Заказы
                                 </Typography>
                             </Button>
                             <Button variant="primary" onClick={handleLogout}>
                                 <Typography variant={'subtitle2'} className={s.button_text}>
-                                    Logout
+                                    Выйти
                                 </Typography>
                             </Button>
                         </>
                         :
                         <Button variant="primary" as={NavLink} to={'/login'}>
                             <Typography variant={'subtitle2'} className={s.button_text}>
-                                Sign in
+                                Войти
                             </Typography>
                         </Button>
                     }

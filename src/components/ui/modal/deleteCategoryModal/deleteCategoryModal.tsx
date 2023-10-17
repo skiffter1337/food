@@ -21,8 +21,8 @@ export const DeleteCategoryModal: FC<DeleteCategoryModalType> = ({width, trigger
     const onOpenChange = () => setIsOpen(!isOpen)
 
     const deleteCategoryHandler = () => {
-        // deleteCategory(currentCategoryId)
-        // setIsOpen(false)
+        deleteCategory(currentCategoryId)
+        setIsOpen(false)
     }
     return (
         <Modal.Root
@@ -38,8 +38,8 @@ export const DeleteCategoryModal: FC<DeleteCategoryModalType> = ({width, trigger
                     </Typography>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant={'primary'} type={'submit'}>
-                        <Typography variant={'subtitle2'} className={s.text_color_white} onClick={deleteCategoryHandler}>
+                    <Button variant={'primary'} type={'submit'} onClick={deleteCategoryHandler}>
+                        <Typography variant={'subtitle2'} className={s.text_color_white}>
                             Удалить
                         </Typography>
                     </Button>

@@ -68,12 +68,9 @@
     @include mixins.flex(row-reverse, space-between);
 
     padding: 12px 24px 36px;
-
-    // govnocode
     p {
       color: var(--color-light-100);
     }
 
-    // govnocode
   }
 }

@@ -11,10 +11,10 @@ export type MenuType = {
     price: number,
     weight: number,
     description: string | null,
-    isEmpty: boolean,
+    isEmpty?: boolean,
     categoryId: number,
-    createdAt: string,
-    updatedAt: string,
+    createdAt?: string,
+    updatedAt?: string,
     category: CategoryType
 }
 
@@ -25,6 +25,14 @@ type CategoryType = {
     updatedAt: string
 }
 
+type MenuItemType = {
+    categoryId: number
+    name: string
+    price: number
+    weight: number
+    description: string
+}
+
 const getMenu = createAppAsyncThunk(
     'menu/getMenu',
     async (arg, thunkAPI) => {
@@ -33,11 +41,17 @@ const getMenu = createAppAsyncThunk(
     }
 );
 
+const addItem = createAppAsyncThunk<{ item: MenuType }, MenuItemType>('menu/addItem',
+    async (item) => {
+        const res = await menuApi.addItem(item)
+        return {item: res.data}
+
+    })
 const deleteItem = createAppAsyncThunk<{ id: number }, number>(
     'menu/deleteItem',
     async (id) => {
         const res = await menuApi.deleteItem(id)
-        return {id}
+        return res.data
     }
 )
 
@@ -50,15 +64,20 @@ const slice = createSlice({
             .addCase(getMenu.fulfilled, (state, action) => {
                 return action.payload.menu
             })
+            .addCase(addItem.fulfilled, (state, action) => {
+               debugger
+                state.push(action.payload.item)
+            })
+
             .addCase(deleteItem.fulfilled, (state, action) => {
                 const index = state.findIndex(
                     (menu) => menu.id === action.payload.id
-                );
-                if (index !== -1) state.splice(index, 1);
+                )
+                if (index !== -1) state.splice(index, 1)
             })
     }
 })
 
 export const menuSlice = slice.reducer
 export const menuActions = slice.actions
-export const menuThunks = {getMenu, deleteItem}
+export const menuThunks = {getMenu, addItem, deleteItem}

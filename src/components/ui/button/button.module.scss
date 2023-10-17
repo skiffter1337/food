@@ -66,7 +66,7 @@
   }
 
   &:disabled {
-    color: var(--color-light-900);
+    background-color: var(--color-light-900);
     box-shadow: 0 4px 4px 0 rgb(77 86 96 / 13%);
   }
 }

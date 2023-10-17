@@ -9,7 +9,6 @@ const schema = z.object({
         .nonempty('Введите название категории')
         .min(3, 'Название категории должно быть больше 3 символов')
         .max(20, 'Название категории не должно быть больше 20 символов'),
-    isPrivate: z.boolean().optional(),
 })
 
 type Form = z.infer<typeof schema>
@@ -17,7 +16,7 @@ type Form = z.infer<typeof schema>
 export const useAddNewCategory = () => {
     return useForm<Form>({
         resolver: zodResolver(schema),
-        defaultValues: { categoryName: '', isPrivate: false },
+        defaultValues: { categoryName: ''},
         mode: 'onSubmit',
     })
 }
