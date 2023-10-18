@@ -10,19 +10,29 @@ import {NoItems} from "../../ui/noItems/noItems";
 export type MenuListType = {
     menu: MenuType[]
     currentCategoryId: number
+    searchText: string
 }
 
-export const MenuList: FC<MenuListType> = ({menu, currentCategoryId}) => {
+export const MenuList: FC<MenuListType> = ({menu, currentCategoryId, searchText}) => {
 
     const {deleteItem} = useActions(menuThunks)
-    const filteredMenu = menu.filter(good => currentCategoryId === 0 ? good : good?.categoryId === currentCategoryId)
+
+    const filteredMenu = menu.filter((good) => {
+        if (currentCategoryId === 0 || good?.categoryId === currentCategoryId) {
+            if (searchText) {
+                return good.name.toLowerCase().includes(searchText.toLowerCase())
+            }
+            return true
+        }
+        return false
+    })
 
     const mappedMenu = filteredMenu.map(good => {
         return (
             <div key={good.id} className={s.good}>
                 <div className={s.header}>
                     <div>
-                        <Typography variant={'h3'} className={s.text_color_white}>
+                        <Typography variant={'h3'}>
                             {good.name}
                         </Typography>
                     </div>
@@ -31,24 +41,24 @@ export const MenuList: FC<MenuListType> = ({menu, currentCategoryId}) => {
                     </div>
                 </div>
                 <div className={s.body}>
-                    <Typography variant={'subtitle2'} className={s.text_color_white}>
+                    <Typography variant={'subtitle2'}>
                         Цена: {good.price} руб.
                     </Typography>
-                    <Typography variant={'subtitle2'} className={s.text_color_white}>
+                    <Typography variant={'subtitle2'}>
                         Кол-во: {`${good.weight} гр.`}
                     </Typography>
-                    <Typography variant={'subtitle2'} className={s.text_color_white}>
+                    <Typography variant={'subtitle2'}>
                         Описание: {good.description ?? '-'}
                     </Typography>
                 </div>
                 <div className={s.buttons}>
                     <Button variant={'secondary'}>
-                        <Typography variant={'subtitle2'} className={s.text_color_white}>
+                        <Typography variant={'subtitle2'}>
                             В стоп лист
                         </Typography>
                     </Button>
                     <Button variant={'primary'}>
-                        <Typography variant={'subtitle2'} className={s.text_color_white}>
+                        <Typography variant={'subtitle2'}>
                             В заказ
                         </Typography>
                     </Button>

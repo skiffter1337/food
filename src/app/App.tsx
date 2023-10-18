@@ -12,7 +12,6 @@ import {useActions} from "../hooks/useActions";
 import {appThunks} from "./app.slice";
 import {useSelector} from "react-redux";
 import {selectIsInitialized} from "./app.selector";
-import {Typography} from "../components/ui/typography/typography";
 import {Main} from "../components/main/main";
 
 

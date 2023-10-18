@@ -1,0 +1,82 @@
+@use 'src/styles/mixins';
+
+.trigger {
+  all: unset;
+
+  //@include mixins.flex(column, center, center);
+  cursor: pointer;
+
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  @include mixins.flex(column);
+
+  z-index: 999;
+
+  gap: 12px;
+
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+
+  color: var(--color-light-100);
+
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-500);
+  border-radius: 4px;
+
+  .block {
+    @include mixins.flex(column, flex-start, flex-start);
+
+    gap: 12px;
+
+    .separator {
+      width: 100%;
+      height: 1px;
+      background-color: var(--color-dark-500);
+    }
+  }
+
+  .item {
+    &:hover {
+      outline: none;
+    }
+
+    .item_icon {
+      @include mixins.flex(row, center, center);
+
+      cursor: pointer;
+      gap: 10px;
+      color: var(--color-light-100);
+    }
+  }
+
+  .arrow_box {
+    fill: var(--color-dark-700);
+    stroke: var(--color-dark-500);
+    stroke-width: 2px;
+  }
+}
+
+.arrow {
+  position: absolute;
+  top: -4px;
+  right: 25px;
+  transform: rotate(45deg);
+
+  width: 7px;
+  height: 7px;
+
+  background-color: var(--color-dark-700);
+  border: 1px solid var(--color-dark-100);
+  border-top: none;
+  border-left: none;
+
+  &.table_arrow {
+    right: 0;
+  }
+}

@@ -14,7 +14,6 @@ export const Menu = () => {
 
     const [currentCategoryId, setCurrentCategoryId] = useState(0)
     const [searchText, setSearchText] = useState('');
-
     const menu = useAppSelector(selectMenu)
     const {getMenu} = useActions(menuThunks)
     const {getCategories} = useActions(categoriesThunks)
@@ -23,11 +22,10 @@ export const Menu = () => {
         getCategories({})
         getMenu({})
     }, []);
-
     return (
         <div className={s.menu}>
-            <MenuPanel setCurrentCategoryId={setCurrentCategoryId} currentCategoryId={currentCategoryId}/>
-            <MenuList menu={menu} currentCategoryId={currentCategoryId}/>
+            <MenuPanel setCurrentCategoryId={setCurrentCategoryId} currentCategoryId={currentCategoryId} setSearchText={setSearchText} searchText={searchText}/>
+            <MenuList menu={menu} currentCategoryId={currentCategoryId} searchText={searchText}/>
         </div>
     );
 };

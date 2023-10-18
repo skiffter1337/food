@@ -85,12 +85,12 @@ export const AddNewGoodModal: FC<AddNewGoodModal> = ({width, trigger}) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant={'primary'} type={'submit'}>
-                        <Typography variant={'subtitle2'} className={s.text_color_white}>
+                        <Typography variant={'subtitle2'}>
                             Добавить
                         </Typography>
                     </Button>
                     <Button variant={'secondary'} onClick={() => setIsOpen(false)}>
-                        <Typography variant={'subtitle2'} className={s.text_color_white}>
+                        <Typography variant={'subtitle2'}>
                             Отмена
                         </Typography>
                     </Button>

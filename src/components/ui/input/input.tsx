@@ -15,7 +15,7 @@ export type InputPropsType = {
     type?: 'text' | 'password' | 'number'
     onClearClick?: () => void
     onChange?: (value: string | number) => void;
-    value?: string
+    value: string
     disabled?: boolean
     placeholder?: string
     error?: boolean

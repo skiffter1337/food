@@ -39,12 +39,12 @@ export const DeleteCategoryModal: FC<DeleteCategoryModalType> = ({width, trigger
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant={'primary'} type={'submit'} onClick={deleteCategoryHandler}>
-                        <Typography variant={'subtitle2'} className={s.text_color_white}>
+                        <Typography variant={'subtitle2'}>
                             Удалить
                         </Typography>
                     </Button>
                     <Button variant={'secondary'} onClick={() => setIsOpen(false)}>
-                        <Typography variant={'subtitle2'} className={s.text_color_white }>
+                        <Typography variant={'subtitle2'}>
                             Отмена
                         </Typography>
                     </Button>
