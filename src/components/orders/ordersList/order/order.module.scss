@@ -1,0 +1,37 @@
+
+.order {
+  background-color: var(--color-dark-700);
+  height: fit-content;
+  width: 300px;
+  border: 1px solid var(--color-dark-500);
+  word-break: break-all;
+
+  .header {
+    white-space: nowrap;
+    padding: 15px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    border-bottom: 1px solid var(--color-dark-500);
+
+  }
+
+  .body {
+    white-space: normal;
+    padding: 15px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.buttons {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+

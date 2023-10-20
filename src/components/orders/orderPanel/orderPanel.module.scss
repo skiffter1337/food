@@ -1,0 +1,11 @@
+.manage_orders_buttons {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  white-space: nowrap;
+  gap: 20px;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+
+}
