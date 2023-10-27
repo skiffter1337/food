@@ -2,9 +2,9 @@
 .order {
   background-color: var(--color-dark-700);
   height: fit-content;
-  width: 300px;
+  max-width: 350px;
+  min-width: 300px;
   border: 1px solid var(--color-dark-500);
-  word-break: break-all;
 
   .header {
     white-space: nowrap;
@@ -20,6 +20,7 @@
   }
 
   .body {
+    word-break:  break-word;
     white-space: normal;
     padding: 15px;
     gap: 10px;
