@@ -1,56 +1,56 @@
-import React from 'react';
+import React, {FC} from 'react';
 import s from './order.module.scss'
 import {Typography} from "../../../ui/typography/typography";
 import {Button} from "../../../ui/button/button";
+import {MenuType} from "../../../menu/menu.slice";
+import {formatDateTime} from "../../../../common/utils/formatDateTime";
+import {useActions} from "../../../../hooks/useActions";
+import {orderThunks} from "../../orders.slice";
+import {OrdersResponseType, StatusType} from "../../order.api";
 
-export const Order = () => {
+type OrderPropsType = {
+    name: string
+    createdAt: string | undefined
+    items: MenuType[]
+    comment: string
+    order: OrdersResponseType
+    status: StatusType
+}
+export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, order, status}) => {
 
-    const order = {
-        id: 1,
-        number: 2139213,
-        items: [
-            {
-                id: 11,
-                name: "Шаурма",
-                price: 120,
-            },
-            {
-                id: 11,
-                name: "Кола",
-                price: 90,
-            },
-            {
-                id: 11,
-                name: "Картошка фри",
-                price: 100,
-            }
-        ],
-        description: 'Картошка без соли',
-        totalPrice: 310,
-        createdAt: '2023.10.20 21:54'
-    }
-
+    const {changeOrderStatus} = useActions(orderThunks)
     return (
         <div className={s.order}>
             <div className={s.header}>
                 <Typography variant={'h3'}>
-                    Заказ {`${order.number}`}
+                    Заказ {`${name}`}
                 </Typography>
                 <Typography variant={'h3'}>
-                    {order.createdAt}
+                    {formatDateTime(createdAt!)}
                 </Typography>
             </div>
             <div className={s.body}>
-                {order.items.map(item => <Typography variant={'subtitle2'}>- {item.name}</Typography>)}
-                <Typography variant={'subtitle2'}>Комментарий: {order.description}</Typography>
+                {items.map(item => <Typography variant={'subtitle2'} key={item.id}>- {item.name}</Typography>)}
+                {comment ? <Typography variant={'h3'}>Комментарий: {comment}</Typography> : null}
             </div>
-            <div className={s.buttons}>
-                <Button variant={'primary'}>
-                    <Typography variant={'subtitle2'}>
-                        Заказ готов
-                    </Typography>
-                </Button>
-            </div>
+            {status !== 'finished' ?
+                <div className={s.buttons}>
+                    {status === 'created' ?
+                        <Button variant={'primary'}
+                                onClick={() => changeOrderStatus({...order, status: 'readyForPickup'})}>
+                            <Typography variant={'subtitle2'}>
+                                Заказ готов
+                            </Typography>
+                        </Button>
+                        :
+                        <Button variant={'primary'} onClick={() => changeOrderStatus({...order, status: 'finished'})}>
+                            <Typography variant={'subtitle2'}>
+                                Выдать
+                            </Typography>
+                        </Button>
+                    }
+                </div>
+                : <Typography variant={'h2'} className={s.finished}>Завершен</Typography>}
         </div>
     );
 };

@@ -1,0 +1,22 @@
+.delete_good {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.375rem;
+  height: 2.375rem;
+  border-radius: 50%;
+
+  &:active {
+    background-color: var(--color-dark-100);
+  }
+
+  &:hover {
+    background-color: var(--color-dark-500);
+  }
+
+  &:focus-within {
+    background-color: var(--color-dark-100);
+  }
+
+}

@@ -1,18 +1,30 @@
 import React, {FC} from 'react';
 import {Typography} from "../../../ui/typography/typography";
-import {TrashOutlined} from "../../../../images/icons/trashOutlined/trashOutlined";
 import {Button} from "../../../ui/button/button";
 import s from './menuItem.module.scss'
+import {useAppDispatch} from "../../../../hooks/useAppDispatch";
+import {orderActions} from "../../../orders/orders.slice";
+import {DeleteButton} from "../../../ui/deleteButton/deleteButton";
+import {menuThunks, MenuType} from "../../menu.slice";
+import {useActions} from "../../../../hooks/useActions";
+import {selectIsAdmin} from "../../../../app/app.selector";
+import {useAppSelector} from "../../../../hooks/useAppSelector";
 
 type MenuItemPropsType = {
+    good: MenuType
     id: number
     name: string
     price: number
     weight: number
     description: string | null
+    isEmpty: boolean
     deleteItem: (id: number) => void
 }
-export const MenuItem: FC<MenuItemPropsType> = ({id, name, price, weight, description, deleteItem}) => {
+export const MenuItem: FC<MenuItemPropsType> = ({good, id, name, price, weight, description, isEmpty, deleteItem}) => {
+    const dispatch = useAppDispatch()
+    const {changeItemsStatus} = useActions(menuThunks)
+    const isAdmin = useAppSelector(selectIsAdmin)
+
     return (
         <div className={s.good}>
             <div className={s.header}>
@@ -21,9 +33,7 @@ export const MenuItem: FC<MenuItemPropsType> = ({id, name, price, weight, descri
                         {name}
                     </Typography>
                 </div>
-                <div onClick={() => deleteItem(id)} className={s.delete_good}>
-                    <TrashOutlined/>
-                </div>
+                {isAdmin && <DeleteButton callback={() => deleteItem(id)}/>}
             </div>
             <div className={s.body}>
                 <Typography variant={'subtitle2'}>
@@ -37,12 +47,22 @@ export const MenuItem: FC<MenuItemPropsType> = ({id, name, price, weight, descri
                 </Typography>
             </div>
             <div className={s.buttons}>
-                <Button variant={'secondary'}>
-                    <Typography variant={'subtitle2'}>
-                        В стоп лист
-                    </Typography>
-                </Button>
-                <Button variant={'primary'}>
+                {isAdmin ? (isEmpty ?
+                        <Button variant={'secondary'} onClick={() => changeItemsStatus(good)}>
+                            <Typography variant={'subtitle2'}>
+                                Активировать
+                            </Typography>
+                        </Button> :
+                        <Button variant={'secondary'} onClick={() => changeItemsStatus(good)}>
+                            <Typography variant={'subtitle2'}>
+                                В стоп лист
+                            </Typography>
+                        </Button>)
+                    : null
+                }
+                <Button variant={'primary'} disabled={good.isEmpty}
+                        onClick={() => dispatch(orderActions.addItemToOrder({id, count: 1}))}
+                >
                     <Typography variant={'subtitle2'}>
                         В заказ
                     </Typography>

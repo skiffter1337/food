@@ -1,12 +1,16 @@
 import axios from "axios";
 
-const getToken = () => localStorage.getItem('token')
-
+export const getToken = () => localStorage.getItem('token')
 
 export const instance = axios.create({
     baseURL: 'https://food-api-yra2.onrender.com',
     withCredentials: true,
-    headers: {
-        'Authorization': 'Bearer ' + getToken()
+})
+
+instance.interceptors.request.use(config => {
+    const token = getToken()
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
     }
+    return config
 })

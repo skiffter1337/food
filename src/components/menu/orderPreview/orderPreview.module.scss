@@ -1,3 +1,25 @@
 .order_title {
   align-self: center;
 }
+
+.goods {
+  padding: 10px 0;
+  width: 100%;
+  border-bottom: 1px solid var(--color-dark-500);
+  border-top: 1px solid var(--color-dark-500);
+  .good {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+[data-disabled="true"] {
+    background-color: var(--color-light-900);
+    box-shadow: 0 4px 4px 0 rgb(77 86 96 / 13%);
+}
+.button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

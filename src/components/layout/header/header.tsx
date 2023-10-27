@@ -7,13 +7,15 @@ import {useSelector} from "react-redux";
 import {selectIsLoggedIn} from "../../auth/auth.selector";
 import {useActions} from "../../../hooks/useActions";
 import {authThunks} from "../../auth/auth.slice";
+import {selectIsCashier} from "../../../app/app.selector";
+import {useAppSelector} from "../../../hooks/useAppSelector";
 
 
-export const Header= () => {
-
+export const Header = () => {
+    const isCashier = useAppSelector(selectIsCashier)
     const navigate = useNavigate()
     const {logout} = useActions(authThunks)
-    const handleLogout = async  () => {
+    const handleLogout = async () => {
         await logout({isLoggedIn: false})
         navigate('/login')
     }
@@ -28,11 +30,13 @@ export const Header= () => {
                 <div className={s.buttons}>
                     {isLoggedIn ?
                         <>
-                            <Button variant={'link'} as={NavLink} to={'/menu'}>
-                                <Typography variant={'h3'} className={s.button_text}>
-                                    Меню
-                                </Typography>
-                            </Button>
+                            {!isCashier ?
+                                <Button variant={'link'} as={NavLink} to={'/menu'}>
+                                    <Typography variant={'h3'} className={s.button_text}>
+                                        Меню
+                                    </Typography>
+                                </Button>
+                                : null}
                             <Button variant={'link'} as={NavLink} to={'/orders'}>
                                 <Typography variant={'h3'} className={s.button_text}>
                                     Заказы

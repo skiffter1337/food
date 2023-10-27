@@ -1,66 +1,40 @@
-import { FC, ReactNode } from 'react'
+import {FC, ReactNode} from 'react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import s from './dropdown.module.scss'
 import {Typography} from "../typography/typography";
 
 type DropdownType = {
-  trigger?: ReactNode
-  children: ReactNode
+    trigger?: ReactNode
+    children: ReactNode
+    isDisabled?: boolean
 }
-export const Dropdown: FC<DropdownType> = ({trigger, children }) => {
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger className={s.trigger}>{trigger}</DropdownMenu.Trigger>
-      <DropdownMenu.Content className={s.content} sideOffset={10} align={'end'}>
-        <div className={s.block}>{children}</div>
-        <DropdownMenu.Arrow className={s.arrow_box} asChild>
-          <div className={`${s.arrow}`} />
-        </DropdownMenu.Arrow>
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
-  )
+export const Dropdown: FC<DropdownType> = ({trigger, children, isDisabled}) => {
+    return (
+        <DropdownMenu.Root>
+            <DropdownMenu.Trigger className={s.trigger} disabled={isDisabled}>{trigger}</DropdownMenu.Trigger>
+            {isDisabled ? null : (
+                <DropdownMenu.Content className={s.content} sideOffset={10} align={'end'} data-state={"closed"}>
+                    <div className={s.block}>{children}</div>
+                    <DropdownMenu.Arrow className={s.arrow_box} asChild>
+                        <div className={`${s.arrow}`}/>
+                    </DropdownMenu.Arrow>
+                </DropdownMenu.Content>
+            )}
+        </DropdownMenu.Root>
+    )
 }
-
-// type DropDownItemWithIconPropsType = {
-//   onSelect?: () => void
-//   icon: ReactNode
-//   text: string
-//   separator?: boolean
-// }
-//
-// export const DropDownItemWithIcon: FC<DropDownItemWithIconPropsType> = ({
-//   icon,
-//   text,
-//   separator = false,
-//   onSelect,
-// }) => {
-//   const onSelectHandler = (e: Event) => {
-//     onSelect && onSelect()
-//     e.preventDefault()
-//   }
-//
-//   return (
-//     <>
-//       <DropdownMenu.Item className={s.item} onSelect={onSelectHandler}>
-//         <Typography variant={'caption'} className={s.item_icon}>
-//           {icon} {text}
-//         </Typography>
-//       </DropdownMenu.Item>
-//       {separator && <DropdownMenu.Separator className={s.separator} />}
-//     </>
-//   )
-// }
 
 type DropDownItemPropsType = {
-  children: ReactNode
-  separator?: boolean
-  className?: string
+    children: ReactNode
+    separator?: boolean
+    className?: string
+    onSelect?: () => void
 }
-export const DropDownItem: FC<DropDownItemPropsType> = ({ children, separator , className}) => {
-  return (
-    <>
-      <DropdownMenu.Item className={`${s.item} ${className}`}>{children}</DropdownMenu.Item>
-      {separator && <DropdownMenu.Separator className={s.separator} />}
-    </>
-  )
+export const DropDownItem: FC<DropDownItemPropsType> = ({children, separator, className, onSelect}) => {
+    return (
+        <>
+            <DropdownMenu.Item className={`${s.item} ${className}`} onSelect={onSelect}>{children}</DropdownMenu.Item>
+            {separator && <DropdownMenu.Separator className={s.separator}/>}
+        </>
+    )
 }

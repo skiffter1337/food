@@ -9,8 +9,6 @@ import {authThunks} from "../auth.slice";
 import {toast} from "react-toastify";
 import {toastSuccess} from "../../../helpers/toastVariants/success/success";
 import {Card} from "../../ui/card/card";
-import {useSelector} from "react-redux";
-import {selectIsLoggedIn} from "../auth.selector";
 
 
 export const LoginForm = () => {
@@ -20,7 +18,7 @@ export const LoginForm = () => {
 
     const onSubmit = handleSubmit(async data => {
         await login(data)
-        toast.success('You are successfully signed in!', toastSuccess)
+        toast.success('Вы авторизовались!', toastSuccess)
         navigate('/')
     })
 
@@ -28,20 +26,20 @@ export const LoginForm = () => {
         <>
             <Card className={s.card}>
                 <Typography variant={'large'} className={s.title}>
-                    Sign In
+                    Авторизация
                 </Typography>
 
                 <form onSubmit={onSubmit}>
                     <ControlledInput
                         id="login"
-                        label="Login"
+                        label="Логин"
                         control={control}
                         name={'login'}
                         className={s.text_field}
                     />
                     <ControlledInput
                         id={'password'}
-                        label={'Password'}
+                        label={'Пароль'}
                         type={'password'}
                         control={control}
                         name={'password'}
@@ -49,19 +47,19 @@ export const LoginForm = () => {
                     />
                     <Button type={'submit'} fullWidth={true} className={s.submit_button}>
                         <Typography variant={'subtitle2'} className={s.submit_button_text}>
-                            Sign in
+                            Войти
                         </Typography>
                     </Button>
                     <Typography variant={'body2'} className={s.dont_have_account}>
-                        {`Don't have an account?`}
+                        {`Нет аккаунта?`}
                     </Typography>
-                    <div className={s.sign_up_button_container}>
-                        <Button variant={'link'} as={NavLink} to={'/signUp'}>
-                            <Typography variant={'subtitle1'} className={s.sign_up_button_text}>
-                                Sign up
-                            </Typography>
-                        </Button>
-                    </div>
+                    {/*<div className={s.sign_up_button_container}>*/}
+                    {/*    <Button variant={'link'} as={NavLink} to={'/signUp'}>*/}
+                    {/*        <Typography variant={'subtitle1'} className={s.sign_up_button_text}>*/}
+                    {/*            Регистрация*/}
+                    {/*        </Typography>*/}
+                    {/*    </Button>*/}
+                    {/*</div>*/}
                 </form>
             </Card>
         </>

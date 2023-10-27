@@ -1,12 +1,17 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {categoriesApi} from "./categories.api";
 import {createAppAsyncThunk} from "../../../../common/utils/create-app-async-thunk";
+import {appActions} from "../../../../app/app.slice";
+import {menuApi} from "../../menu.api";
+import {menuThunks, MenuType} from "../../menu.slice";
+import {toastError} from "../../../../helpers/toastVariants/error/error";
 
 const initialState: CategoryType[] = []
 
 export type CategoryType = {
     id: number,
     categoryName: string
+    menuItems: MenuType[]
 }
 
 const getCategories = createAppAsyncThunk('categories/getCategories',

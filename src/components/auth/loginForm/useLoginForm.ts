@@ -7,9 +7,9 @@ const schema = z.object({
     password: z
         .string()
         .trim()
-        .nonempty('Enter password')
-        .min(3, 'Password must be at least 3 symbols')
-        .max(30, 'Max password length is 30 symbols'),
+        .nonempty('Введите пароль')
+        .min(3, 'Пароль должен быть больше 3 символов')
+        .max(30, 'Максимальная длинна пароля 30 символов'),
     rememberMe: z.boolean().optional(),
 })
 

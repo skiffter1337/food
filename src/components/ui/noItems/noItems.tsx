@@ -7,7 +7,7 @@ type NoItems = {
 }
 export const NoItems: FC<NoItems> = ({children}) => {
     return (
-        <Typography variant={'h2'} className={`${s.color} ${s.no_goods}`}>
+        <Typography variant={'h2'} className={s.no_goods}>
             {children}
         </Typography>
     );

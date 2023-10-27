@@ -1,4 +1,5 @@
 import {instance} from "../../common/api/common.api";
+import {MenuType} from "./menu.slice";
 
 export const menuApi = {
     getMenu() {
@@ -9,5 +10,8 @@ export const menuApi = {
     },
     deleteItem(id: number) {
         return instance.delete('/menu/' + id)
+    },
+    changeItem(item: MenuType) {
+        return instance.put('/menu/' + item.id, item)
     }
 }

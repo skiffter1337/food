@@ -1,6 +1,11 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "../../common/utils/create-app-async-thunk";
 import {menuApi} from "./menu.api";
+import {authActions, login} from "../auth/auth.slice";
+import {authApi} from "../auth/auth.api";
+import {toast} from "react-toastify";
+import {toastError} from "../../helpers/toastVariants/error/error";
+import {appActions} from "../../app/app.slice";
 
 
 const initialState: MenuType[] = []
@@ -11,18 +16,10 @@ export type MenuType = {
     price: number,
     weight: number,
     description: string | null,
-    isEmpty?: boolean,
+    isEmpty: boolean,
     categoryId: number,
     createdAt?: string,
     updatedAt?: string,
-    category: CategoryType
-}
-
-type CategoryType = {
-    id: number
-    categoryName: string
-    createdAt: string
-    updatedAt: string
 }
 
 type MenuItemType = {
@@ -34,10 +31,9 @@ type MenuItemType = {
 }
 
 const getMenu = createAppAsyncThunk(
-    'menu/getMenu',
-    async (arg, thunkAPI) => {
-        const res = await menuApi.getMenu();
-        return {menu: res.data};
+    'menu/getMenu', async (arg, thunkAPI) => {
+            const res = await menuApi.getMenu();
+            return {menu: res.data};
     }
 );
 
@@ -55,6 +51,14 @@ const deleteItem = createAppAsyncThunk<{ id: number }, number>(
     }
 )
 
+const changeItemsStatus = createAppAsyncThunk<MenuType, MenuType>(
+    'menu/changeItemStatus',
+    async (item) => {
+        const res = await menuApi.changeItem({...item, isEmpty: !item.isEmpty})
+        return res.data
+    }
+)
+
 const slice = createSlice({
     name: 'menu',
     initialState,
@@ -65,7 +69,6 @@ const slice = createSlice({
                 return action.payload.menu
             })
             .addCase(addItem.fulfilled, (state, action) => {
-               debugger
                 state.push(action.payload.item)
             })
 
@@ -75,9 +78,13 @@ const slice = createSlice({
                 )
                 if (index !== -1) state.splice(index, 1)
             })
+            .addCase(changeItemsStatus.fulfilled, (state, action) => {
+                const index = state.findIndex(item => item.id === action.payload.id)
+                if (index !== -1) state[index] = action.payload
+            })
     }
 })
 
 export const menuSlice = slice.reducer
 export const menuActions = slice.actions
-export const menuThunks = {getMenu, addItem, deleteItem}
+export const menuThunks = {getMenu, addItem, deleteItem, changeItemsStatus}

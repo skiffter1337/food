@@ -15,7 +15,7 @@ export const MenuList: FC<MenuListType> = ({menu, currentCategoryId, searchText}
 
     const {deleteItem} = useActions(menuThunks)
 
-    const filteredMenu = menu.filter((good) => {
+    const filteredMenu = menu && menu.filter((good) => {
         if (currentCategoryId === 0 || good?.categoryId === currentCategoryId) {
             if (searchText) {
                 return good.name.toLowerCase().includes(searchText.toLowerCase())
@@ -25,16 +25,19 @@ export const MenuList: FC<MenuListType> = ({menu, currentCategoryId, searchText}
         return false
     })
 
+
     return (
-        menu.length ?
+        filteredMenu.length ?
             <div className={s.goods}>
                 {filteredMenu.map(good => <MenuItem
+                    good={good}
                     key={good.id}
                     id={good.id}
                     name={good.name}
                     price={good.price}
                     weight={good.weight}
                     description={good.description}
+                    isEmpty={good.isEmpty}
                     deleteItem={deleteItem}
                 />)}
             </div>

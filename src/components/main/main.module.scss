@@ -1,0 +1,43 @@
+.main {
+  padding: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.hello {
+  text-align: center;
+  word-break: break-word;
+  font-size: 28px;
+  line-height: 30px;
+  animation: pulse 2s infinite, colorChange 5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes colorChange {
+  0% {
+    color: blueviolet;
+  }
+  25% {
+    color: mediumpurple;
+  }
+  50% {
+    color: magenta;
+  }
+  75% {
+    color: rebeccapurple;
+  }
+  100% {
+    color: blueviolet;
+  }
+}

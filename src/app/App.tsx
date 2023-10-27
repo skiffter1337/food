@@ -13,6 +13,7 @@ import {appThunks} from "./app.slice";
 import {useSelector} from "react-redux";
 import {selectIsInitialized} from "./app.selector";
 import {Main} from "../components/main/main";
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 export function App() {
@@ -43,6 +44,7 @@ export function App() {
             element: <Layout/>,
             children: [
                 {
+
                     element: <ProtectedRoutes/>,
                     children: protectedRoutes,
                 },
@@ -59,18 +61,16 @@ export function App() {
     ])
 
     const isInitialized = useSelector(selectIsInitialized)
+
+
     const {initializeApp} = useActions(appThunks)
 
     useEffect(() => {
-        // initializeApp({})
+        initializeApp({})
     }, []);
-    // if (!isInitialized) {
-    //     return (
-    //         <Typography variant={'h2'} style={{textAlign: 'center', color: 'white'}}>
-    //             ...Загрузка
-    //         </Typography>
-    //     );
-    // }
+    if (!isInitialized) {
+        return <div style={{display: 'flex', justifyContent: 'center'}}><CircularProgress color="secondary" /></div>
+    }
 
     return <RouterProvider router={router}/>
 }
