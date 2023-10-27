@@ -8,7 +8,6 @@ import {Input} from "../../ui/input/input";
 import {useAppSelector} from "../../../hooks/useAppSelector";
 import {selectOrder} from "../../orders/orders.selector";
 import {selectMenu} from "../menu.selectors";
-import {TrashOutlined} from "../../../images/icons/trashOutlined/trashOutlined";
 import {DeleteButton} from "../../ui/deleteButton/deleteButton";
 import {useAppDispatch} from "../../../hooks/useAppDispatch";
 import {orderActions, orderThunks} from "../../orders/orders.slice";
@@ -26,10 +25,8 @@ export const OrderPreview: FC<OrderPreviewPropsType> = () => {
     const sendOrderToKitchenHandler = () => {
         setComment('')
         sendOrderToKitchen({items: order, comment, status: 'created'})
-
     }
-    // console.log(menu)
-    // console.log(order)
+
     const mappedOrder = order.map(item => {
         return (
             <div className={s.good} key={item.id}>
