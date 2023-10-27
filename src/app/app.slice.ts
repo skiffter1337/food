@@ -1,10 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {boolean} from "zod";
 import {createAppAsyncThunk} from "../common/utils/create-app-async-thunk";
 import {authApi} from "../components/auth/auth.api";
 import {authActions} from "../components/auth/auth.slice";
 import {toast} from "react-toastify";
-import {toastSuccess} from "../helpers/toastVariants/success/success";
 import {toastError} from "../helpers/toastVariants/error/error";
 
 export type AppInitialStateType = {
@@ -12,7 +10,7 @@ export type AppInitialStateType = {
     isInitialized: boolean
     isLoading: boolean
 }
-export type RoleType = 'admin' | 'kitchen' | 'cashier'
+export type RoleType = 'admin' | 'kitchen' | 'cashier' | null
 
 let meData: AppInitialStateType;
 export const initializeApp = createAppAsyncThunk('app/me', async (arg, thunkAPI) => {
@@ -26,7 +24,8 @@ export const initializeApp = createAppAsyncThunk('app/me', async (arg, thunkAPI)
             toast.error('Вы не авторизованы!', toastError)
         }
     } finally {
-        dispatch(appActions.setInitialized(meData))
+        dispatch(appActions.setInitialized())
+        dispatch(appActions.setRole(meData.role))
     }
 })
 
@@ -41,11 +40,11 @@ const slice = createSlice({
         setIsLoading: (state, action: PayloadAction<{ isLoading: boolean }>) => {
             state.isLoading = action.payload.isLoading
         },
-        setInitialized: (state, action) => {
+        setInitialized: (state) => {
             state.isInitialized = true
-            if(action.payload.role) {
-                state.role = action.payload.role
-            }
+        },
+        setRole: (state, action) => {
+           state.role = action.payload
         }
     }
 })

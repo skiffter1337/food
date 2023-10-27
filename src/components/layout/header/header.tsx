@@ -7,12 +7,13 @@ import {useSelector} from "react-redux";
 import {selectIsLoggedIn} from "../../auth/auth.selector";
 import {useActions} from "../../../hooks/useActions";
 import {authThunks} from "../../auth/auth.slice";
-import {selectIsCashier} from "../../../app/app.selector";
+import {selectIsKitchen, selectRole} from "../../../app/app.selector";
 import {useAppSelector} from "../../../hooks/useAppSelector";
 
 
 export const Header = () => {
-    const isCashier = useAppSelector(selectIsCashier)
+    const isKitchen = useAppSelector(selectIsKitchen)
+    const role = useAppSelector(selectRole)
     const navigate = useNavigate()
     const {logout} = useActions(authThunks)
     const handleLogout = async () => {
@@ -24,13 +25,18 @@ export const Header = () => {
     return (
         <div className={s.header}>
             <div className={s.container}>
+                <div className={s.leftBlock}>
                 <NavLink to={'/'}>
-                    <img src={LOGO} className={s.logo}/>
+                    <img src={LOGO} className={s.logo} alt={'logo'}/>
                 </NavLink>
+                    <Typography variant={'h3'}>
+                        {role}
+                    </Typography>
+                </div>
                 <div className={s.buttons}>
                     {isLoggedIn ?
                         <>
-                            {!isCashier ?
+                            {!isKitchen ?
                                 <Button variant={'link'} as={NavLink} to={'/menu'}>
                                     <Typography variant={'h3'} className={s.button_text}>
                                         Меню

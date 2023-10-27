@@ -20,12 +20,11 @@ export const OrdersList = () => {
         }
     }, []);
 
-    console.log(orders)
     const filteredOrders = orders.filter(el => isKitchen ? el.status === 'created' : isCashier ? el.status === 'readyForPickup' : el).map(order => <Order key={order.id}  order={order} name={order.name} createdAt={order.createdAt}
                                                     items={order.items} comment={order.comment} status={order.status}/>)
     return (
         <>
-            {orders.length !== 0 ?
+            {filteredOrders.length !== 0 ?
                 <div className={s.orders_list}>
                     {filteredOrders}
                 </div>

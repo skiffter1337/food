@@ -10,7 +10,7 @@ import {DeleteCategoryModal} from "../../ui/modal/deleteCategoryModal/deleteCate
 import {useAppSelector} from "../../../hooks/useAppSelector";
 import {AddNewGoodModal} from "../../ui/modal/addNewGoodModal/addNewGoodModal";
 import {OrderPreview} from "../orderPreview/orderPreview";
-import {selectIsAdmin, selectIsLoading} from "../../../app/app.selector";
+import {selectIsAdmin} from "../../../app/app.selector";
 import {CategoryType} from "../menuList/categories/categories.slice";
 
 type MenuPanelPropsType = {
@@ -46,8 +46,7 @@ export const MenuPanel: FC<MenuPanelPropsType> = ({
         title: el.categoryName,
         disabled: false
     }))]
-    const isLoading = useAppSelector(selectIsLoading)
-    console.log(isLoading)
+
     return (
         <div className={s.menu}>
             <div className={s.manage_categories_buttons}>

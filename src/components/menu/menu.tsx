@@ -7,16 +7,15 @@ import {menuThunks} from "./menu.slice";
 import {useAppSelector} from "../../hooks/useAppSelector";
 import {selectMenu} from "./menu.selectors";
 import {categoriesThunks} from "./menuList/categories/categories.slice";
-import {selectIsCashier, selectIsLoading} from "../../app/app.selector";
+import {selectIsKitchen, selectIsLoading} from "../../app/app.selector";
 import {useNavigate} from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import {selectCategories} from "./menuList/categories/categories.selector";
 
 export const Menu = () => {
-    const isCashier = useAppSelector(selectIsCashier)
+    const isKitchen = useAppSelector(selectIsKitchen)
     const isLoading = useAppSelector(selectIsLoading)
     const navigate = useNavigate()
-
     const [currentCategoryId, setCurrentCategoryId] = useState(0)
     const [searchText, setSearchText] = useState('');
     const menu = useAppSelector(selectMenu)
@@ -25,11 +24,10 @@ export const Menu = () => {
     const categories = useAppSelector(selectCategories)
 
     useEffect(() => {
-        if (isCashier) navigate('/orders')
+        if (isKitchen) navigate('/orders')
         getCategories({})
         getMenu({})
     }, []);
-
 
     return (
         <>

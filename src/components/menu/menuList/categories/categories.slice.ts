@@ -1,10 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {categoriesApi} from "./categories.api";
 import {createAppAsyncThunk} from "../../../../common/utils/create-app-async-thunk";
-import {appActions} from "../../../../app/app.slice";
-import {menuApi} from "../../menu.api";
-import {menuThunks, MenuType} from "../../menu.slice";
-import {toastError} from "../../../../helpers/toastVariants/error/error";
+import {MenuType} from "../../menu.slice";
 
 const initialState: CategoryType[] = []
 
@@ -29,7 +26,7 @@ const addCategory = createAppAsyncThunk<{ category: CategoryType }, string>('cat
 const deleteCategory = createAppAsyncThunk<{ id: number }, number>('categories/deleteCategory',
     async (id) => {
         const res = await categoriesApi.deleteCategory(id)
-        return {id: res.data.id}
+        return {id: res.data}
     })
 const slice = createSlice({
     name: 'categoriesSlice',

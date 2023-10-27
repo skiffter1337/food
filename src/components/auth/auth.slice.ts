@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "../../common/utils/create-app-async-thunk";
 import {authApi, LoginParamsType} from "./auth.api";
-import {appThunks} from "../../app/app.slice";
+import {appActions, appThunks} from "../../app/app.slice";
 
 
 export const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
@@ -9,14 +9,16 @@ export const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsTyp
     async (arg, {rejectWithValue, dispatch}) => {
         const res = await authApi.login(arg);
         localStorage.setItem('token', res.data.token)
+        dispatch(appThunks.initializeApp())
         return {isLoggedIn: true}
     }
 );
 
 export const logout = createAppAsyncThunk<{ isLoggedIn: boolean }>(
     'auth/logout',
-     () => {
+     (arg, {dispatch}) => {
         localStorage.removeItem('token')
+        dispatch(appActions.setRole(null))
         return {isLoggedIn: false};
     }
 );

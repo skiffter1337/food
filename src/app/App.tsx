@@ -22,7 +22,6 @@ export function App() {
         {
             path: '/',
             element: <Main/>
-
         },
         {
             path: '/menu',
