@@ -9,7 +9,7 @@ import {orderThunks} from "../../orders.slice";
 import {OrdersResponseType, StatusType} from "../../order.api";
 import {SendOrderToCashierModal} from "../../../ui/modal/sendOrderToCashierModal/sendOrderToCashierModal";
 import {useAppSelector} from "../../../../hooks/useAppSelector";
-import {selectIsAdmin, selectIsKitchen} from "../../../../app/app.selector";
+import {selectIsKitchen} from "../../../../app/app.selector";
 
 
 type OrderPropsType = {
@@ -35,7 +35,7 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
                 </Typography>
             </div>
             <div className={s.body}>
-                {items.map(item => <Typography variant={'subtitle2'} key={item.id}>- {item.name} {item.count}шт.</Typography>)}
+                {items.map(item => <Typography variant={'subtitle2'} key={item.id}>- {item.name} {item.count} шт.</Typography>)}
                 {comment && <Typography variant={'h3'}>Комментарий: {comment}</Typography>}
                 {!isKitchen && <Typography variant={'h3'}>Итого: {order.total_price} руб.</Typography>}
             </div>

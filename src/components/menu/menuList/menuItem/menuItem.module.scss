@@ -1,5 +1,7 @@
 
 .good {
+  flex-grow: 1;
+  flex-basis: 200px;
   word-break: break-word;
   background-color: var(--color-dark-700);
   height: fit-content;

@@ -46,7 +46,7 @@ export const OrdersList = () => {
     }, [orders, uniqueOrderIds])
 
 
-    const filteredOrders = orders.filter(el => isKitchen ? el.status === 'created' : isCashier ? el.status === 'readyForPickup' : el).map(order =>
+    const filteredOrders = orders.filter(el => el.items.length !== 0).filter(el => isKitchen ? el.status === 'created' : isCashier ? el.status === 'readyForPickup' : el).map(order =>
         <Order key={order.id} order={order} name={order.name} createdAt={order.createdAt}
                items={order.items} comment={order.comment} status={order.status}/>)
     return (

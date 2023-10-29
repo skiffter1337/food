@@ -12,6 +12,7 @@ import {IconButton} from "../../ui/IconButton/IconButton";
 import {useAppDispatch} from "../../../hooks/useAppDispatch";
 import {orderActions, orderThunks} from "../../orders/orders.slice";
 import {useActions} from "../../../hooks/useActions";
+import {TrashOutlined} from "../../../images/icons/trashOutlined/trashOutlined";
 
 type OrderPreviewPropsType = {}
 
@@ -33,7 +34,9 @@ export const OrderPreview: FC<OrderPreviewPropsType> = () => {
                 <Typography variant={'subtitle2'}>
                     {`- ${menu.filter(el => el.id === item.id)[0].name} ${item.count}шт.`}
                 </Typography>
-                <IconButton callback={() => dispatch(orderActions.removeItemFromOrder(item.id))}/>
+                <IconButton callback={() => dispatch(orderActions.removeItemFromOrder(item.id))}>
+                    <TrashOutlined/>
+                </IconButton>
             </div>
         )
     })
