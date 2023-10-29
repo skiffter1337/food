@@ -8,7 +8,7 @@ import {Input} from "../../ui/input/input";
 import {useAppSelector} from "../../../hooks/useAppSelector";
 import {selectOrder} from "../../orders/orders.selector";
 import {selectMenu} from "../menu.selectors";
-import {DeleteButton} from "../../ui/deleteButton/deleteButton";
+import {IconButton} from "../../ui/IconButton/IconButton";
 import {useAppDispatch} from "../../../hooks/useAppDispatch";
 import {orderActions, orderThunks} from "../../orders/orders.slice";
 import {useActions} from "../../../hooks/useActions";
@@ -33,7 +33,7 @@ export const OrderPreview: FC<OrderPreviewPropsType> = () => {
                 <Typography variant={'subtitle2'}>
                     {`- ${menu.filter(el => el.id === item.id)[0].name} ${item.count}шт.`}
                 </Typography>
-                <DeleteButton callback={() => dispatch(orderActions.removeItemFromOrder(item.id))}/>
+                <IconButton callback={() => dispatch(orderActions.removeItemFromOrder(item.id))}/>
             </div>
         )
     })

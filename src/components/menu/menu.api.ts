@@ -13,5 +13,5 @@ export const menuApi = {
     },
     changeItem(item: MenuType) {
         return instance.put('/menu/' + item.id, item)
-    }
+    },
 }
