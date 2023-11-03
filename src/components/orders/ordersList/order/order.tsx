@@ -45,9 +45,7 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
                         <SendOrderToCashierModal
                             width={'narrow'}
                             trigger={
-                                <Button variant={'primary'}
-                                        as={'div'}
-                                >
+                                <Button variant={'primary'}>
                                     <Typography variant={'subtitle2'}>
                                         Заказ готов
                                     </Typography>

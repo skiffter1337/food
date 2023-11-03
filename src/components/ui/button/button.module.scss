@@ -26,9 +26,9 @@
     background-color: var(--color-accent-300);
   }
 
-  &:focus {
-    border: 2px solid var(--color-info-700);
-  }
+  //&:focus {
+  //  border: 2px solid var(--color-info-700);
+  //}
 
   &:disabled {
     background-color: var(--color-accent-900);

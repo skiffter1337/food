@@ -1,7 +1,7 @@
 import {Outlet} from 'react-router-dom'
 import s from './laytout.module.scss'
 import {Header} from "./header/header";
-import {toast, ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify";
 import React from "react";
 
 export const Layout = () => {

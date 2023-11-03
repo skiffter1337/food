@@ -6,12 +6,13 @@ import {Input} from "../../ui/input/input";
 import {TabSwitcher} from "../../ui/tabSwitcher/tabSwitcher";
 import {NoItems} from "../../ui/noItems/noItems";
 import {AddNewCategoryModal} from "../../ui/modal/addNewCategoryModal/addNewCategoryModal";
-import {DeleteCategoryModal} from "../../ui/modal/deleteCategoryModal/deleteCategoryModal";
 import {useAppSelector} from "../../../hooks/useAppSelector";
 import {AddNewGoodModal} from "../../ui/modal/addNewGoodModal/addNewGoodModal";
 import {OrderPreview} from "../orderPreview/orderPreview";
 import {selectIsAdmin} from "../../../app/app.selector";
-import {CategoryType} from "../menuList/categories/categories.slice";
+import {categoriesThunks, CategoryType} from "../menuList/categories/categories.slice";
+import {DeleteEntityModal} from "../../ui/modal/deleteEntityModal/deleteEntityModal";
+import {useActions} from "../../../hooks/useActions";
 
 type MenuPanelPropsType = {
     setCurrentCategoryId: (id: number) => void
@@ -29,6 +30,7 @@ export const MenuPanel: FC<MenuPanelPropsType> = ({
                                                       categories
                                                   }) => {
     const isAdmin = useAppSelector(selectIsAdmin)
+    const {deleteCategory} = useActions(categoriesThunks)
 
     useEffect(() => {
         if(categories.length > 0) return
@@ -62,15 +64,18 @@ export const MenuPanel: FC<MenuPanelPropsType> = ({
                                 </Typography>
                             </Button>
                             }/>
-                        <DeleteCategoryModal
+                        <DeleteEntityModal
                             width={'narrow'}
-                            trigger={<Button variant={'secondary'} disabled={!tabs || currentCategoryId === 0}>
+                            entityId={currentCategoryId}
+                            action={deleteCategory}
+                            text={`Удалить категорию ${currentCategoryName} и всё её содержимое?`}
+                            trigger={
+                            <Button variant={'secondary'} disabled={!tabs || currentCategoryId === 0}>
                                 <Typography variant={'subtitle2'}>
                                     Удалить категорию
                                 </Typography>
-                            </Button>}
-                            currentCategoryName={currentCategoryName}
-                            currentCategoryId={currentCategoryId}
+                            </Button>
+                        }
                         />
                         <AddNewGoodModal
                             width={'wide'}

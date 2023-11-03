@@ -1,7 +1,7 @@
 
 .good {
   flex-grow: 1;
-  flex-basis: 200px;
+  flex-basis: 370px;
   word-break: break-word;
   background-color: var(--color-dark-700);
   height: fit-content;
@@ -21,7 +21,7 @@
       justify-content: center;
       align-items: center;
       gap: 10px;
-      .editBtn  {
+      .btnWrapper  {
         cursor: pointer;
         display: flex;
         justify-content: center;
@@ -57,7 +57,24 @@
 
 .buttons {
   padding: 15px;
-  gap: 15px;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  button {
+    box-shadow: none;
+  }
+  .counter {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--color-accent-500);
+    border-radius: 4px;
+
+    .count {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 50px;
+    }
+  }
 }
