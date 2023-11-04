@@ -1,11 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "../../common/utils/create-app-async-thunk";
 import {menuApi} from "./menu.api";
-import {authActions, login} from "../auth/auth.slice";
-import {authApi} from "../auth/auth.api";
-import {toast} from "react-toastify";
-import {toastError} from "../../helpers/toastVariants/error/error";
-import {appActions} from "../../app/app.slice";
 
 
 const initialState: MenuType[] = []
@@ -32,7 +27,7 @@ type MenuItemType = {
 }
 
 const getMenu = createAppAsyncThunk(
-    'menu/getMenu', async (arg, thunkAPI) => {
+    'menu/getMenu', async () => {
             const res = await menuApi.getMenu();
             return {menu: res.data};
     }

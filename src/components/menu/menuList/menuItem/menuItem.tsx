@@ -31,8 +31,6 @@ export const MenuItem: FC<MenuItemPropsType> = ({good, id, name, price, weight, 
     const orderPreview = useAppSelector(selectOrder)
 
     const goodInOrderPreview = orderPreview.find(el => el.id === good.id)
-    console.log(orderPreview)
-    console.log(good.id)
 
     return (
         <div className={s.good}>

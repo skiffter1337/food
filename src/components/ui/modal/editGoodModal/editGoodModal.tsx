@@ -1,26 +1,20 @@
-import React, {FC, ReactNode, useEffect, useState} from 'react';
+import React, {FC, ReactNode, useState} from 'react';
 import {Modal} from "../modal";
 import {Typography} from "../../typography/typography";
 import {Button} from "../../button/button";
 import {ControlledInput} from "../../controlled/controlledInput";
-import {EditGoodDefaultValuesType, useEditGood} from "./useEditGood";
-import s from './addNewGoodModal.module.scss'
-import {Select} from "../../select/select";
-import {useAppSelector} from "../../../../hooks/useAppSelector";
-import {selectCategories} from "../../../menu/menuList/categories/categories.selector";
+import {useEditGood} from "./useEditGood";
 import {useActions} from "../../../../hooks/useActions";
 import {menuThunks, MenuType} from "../../../menu/menu.slice";
-import {login} from "../../../auth/auth.slice";
 
 type EditGoodModal = {
     width: 'wide' | 'narrow'
     trigger: ReactNode
     good: MenuType
 }
-export const EditGoodModal: FC<EditGoodModal> = ({width, trigger, good: {id, name, weight, price, description, isEmpty, categoryId }}) => {
+export const EditGoodModal: FC<EditGoodModal> = ({width, trigger, good}) => {
 
-
-    const {handleSubmit, control, reset} = useEditGood({name, weight, price, description})
+    const {handleSubmit, control, reset} = useEditGood(good)
     const {editItem} = useActions(menuThunks)
 
     const [isOpen, setIsOpen] = useState(false)
@@ -28,8 +22,8 @@ export const EditGoodModal: FC<EditGoodModal> = ({width, trigger, good: {id, nam
     const onOpenChange = () => setIsOpen(!isOpen)
 
     const onSubmit = handleSubmit(data => {
-        editItem({...data, id, isEmpty, categoryId})
-        reset()
+        editItem({...good, ...data})
+        reset({name: data.name, weight: data.weight, price: data.price, description: data.description})
         setIsOpen(false)
     })
     return (
