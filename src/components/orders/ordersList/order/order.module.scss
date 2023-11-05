@@ -1,7 +1,8 @@
 
 .order {
   flex-grow: 1;
-
+  flex-basis: 370px;
+  word-break: break-word;
   background-color: var(--color-dark-700);
   height: fit-content;
   min-width: 350px;

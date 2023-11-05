@@ -13,7 +13,7 @@ export type MenuType = {
     description: string
     isEmpty: boolean
     categoryId: number
-    createdAt?: string
+    createdAt?: Date
     updatedAt?: string
     count?: number
 }

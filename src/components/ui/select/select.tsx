@@ -7,7 +7,7 @@ import {Typography} from "../typography/typography";
 import {ArrowUp} from "../../../images/icons/arrowUp/arrowUp";
 import {ArrowDown} from "../../../images/icons/arrowDown/arrowDown";
 
-type SelectItemsType = {
+export type SelectItemsType = {
   id: number
   value: number
   title: string

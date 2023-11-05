@@ -2,15 +2,24 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "../../common/utils/create-app-async-thunk";
 import {authApi, LoginParamsType} from "./auth.api";
 import {appActions, appThunks} from "../../app/app.slice";
+import {toast} from "react-toastify";
+import {toastError} from "../../helpers/toastVariants/error/error";
+import {toastSuccess} from "../../helpers/toastVariants/success/success";
 
 
 export const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
     'auth/login',
     async (arg, {rejectWithValue, dispatch}) => {
-        const res = await authApi.login(arg);
-        localStorage.setItem('token', res.data.token)
-        dispatch(appThunks.initializeApp())
-        return {isLoggedIn: true}
+        try {
+            const res = await authApi.login(arg);
+            localStorage.setItem('token', res.data.token)
+            dispatch(appThunks.initializeApp())
+            toast.success('Вы авторизовались!', toastSuccess)
+            return {isLoggedIn: true}
+        } catch (err) {
+            toast.error('Неверный логин или пароль', toastError)
+            return {isLoggedIn: false}
+        }
     }
 );
 

@@ -4,13 +4,11 @@ import {Typography} from "../../typography/typography";
 import {Button} from "../../button/button";
 import {ControlledInput} from "../../controlled/controlledInput";
 import {useAddNewGood} from "./useAddNewGood";
-import s from './addNewGoodModal.module.scss'
 import {Select} from "../../select/select";
 import {useAppSelector} from "../../../../hooks/useAppSelector";
 import {selectCategories} from "../../../menu/menuList/categories/categories.selector";
 import {useActions} from "../../../../hooks/useActions";
 import {menuThunks} from "../../../menu/menu.slice";
-import {login} from "../../../auth/auth.slice";
 
 type AddNewGoodModal = {
     width: 'wide' | 'narrow'

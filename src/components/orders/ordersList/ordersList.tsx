@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import s from './orderList.module.scss'
 import {Order} from "./order/order";
 import {useActions} from "../../../hooks/useActions";
@@ -8,8 +8,13 @@ import {selectOrders} from "../orders.selector";
 import {NoItems} from "../../ui/noItems/noItems";
 import {selectIsCashier, selectIsKitchen} from "../../../app/app.selector";
 import NEWORDER from './../../../audio/icq.mp3'
+import {OrdersResponseType} from "../order.api";
 
-export const OrdersList = () => {
+type OrdersListPropsType = {
+    sortedOrders: OrdersResponseType[]
+    isTodayOrdersOnly: boolean
+}
+export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrdersOnly}) => {
     const orders = useAppSelector(selectOrders)
     const isKitchen = useAppSelector(selectIsKitchen)
     const isCashier = useAppSelector(selectIsCashier)
@@ -46,12 +51,38 @@ export const OrdersList = () => {
     }, [orders, uniqueOrderIds])
 
 
-    const filteredOrders = orders.filter(el => el.items.length !== 0).filter(el => isKitchen ? el.status === 'created' : isCashier ? el.status === 'readyForPickup' : el).map(order =>
-        <Order key={order.id} order={order} name={order.name} createdAt={order.createdAt}
-               items={order.items} comment={order.comment} status={order.status}/>)
+    const ordersForMap = sortedOrders.length !== 0 ? sortedOrders : orders
+    const today = new Date()
+    const filteredOrders = ordersForMap
+        .filter((order) => {
+            if (isTodayOrdersOnly) {
+                const orderDate = new Date(order.createdAt!)
+                return (
+                    orderDate.getDate() === today.getDate() &&
+                    orderDate.getMonth() === today.getMonth() &&
+                    orderDate.getFullYear() === today.getFullYear()
+                );
+            }
+            return true
+        })
+        .filter((el) => el.items.length !== 0)
+        .reverse()
+        .filter((el) =>
+            isKitchen ? el.status === "created" : isCashier ? el.status === "readyForPickup" : el
+        )
+        .map((order) => <Order
+                key={order.id}
+                order={order}
+                name={order.name}
+                createdAt={order.createdAt!}
+                items={order.items}
+                comment={order.comment}
+                status={order.status}
+            />
+        );
     return (
         <>
-            <audio id="notificationSound" src={NEWORDER} preload="auto" autoPlay={false} />
+            <audio id="notificationSound" src={NEWORDER} preload="auto" autoPlay={false}/>
             {filteredOrders.length !== 0 ?
                 <div className={s.orders_list}>
                     {filteredOrders}

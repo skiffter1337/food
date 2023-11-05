@@ -6,8 +6,6 @@ import {useLoginForm} from "./useLoginForm";
 import {ControlledInput} from "../../ui/controlled/controlledInput";
 import {useActions} from "../../../hooks/useActions";
 import {authThunks} from "../auth.slice";
-import {toast} from "react-toastify";
-import {toastSuccess} from "../../../helpers/toastVariants/success/success";
 import {Card} from "../../ui/card/card";
 
 
@@ -18,7 +16,6 @@ export const LoginForm = () => {
 
     const onSubmit = handleSubmit(async data => {
         await login(data)
-        toast.success('Вы авторизовались!', toastSuccess)
         navigate('/')
     })
 

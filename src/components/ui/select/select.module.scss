@@ -43,13 +43,13 @@
 
   &.large {
     width: 100%;
-    max-width: 210px;
+    min-width: 210px;
     max-height: 36px;
     padding: 6px 12px;
   }
 
   &.small {
-    max-height: 24px;
+    min-width: 24px;
     padding-right: 2px;
     padding-left: 6px;
   }

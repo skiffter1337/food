@@ -82,8 +82,8 @@ export const MenuItem: FC<MenuItemPropsType> = ({good, id, name, price, weight, 
                     : null
                 }
                 {goodInOrderPreview ?
-                    <div className={s.counter}>
-                        <Button onClick={() => dispatch(orderActions.removeItemFromOrder(good.id))}>
+                    <div className={`${s.counter} ${good.isEmpty ? s.disabled : ''}`}>
+                        <Button disabled={good.isEmpty} onClick={() => dispatch(orderActions.removeItemFromOrder(good.id))}>
                             <Typography variant={'subtitle2'}>
                                 -
                             </Typography>
@@ -93,7 +93,7 @@ export const MenuItem: FC<MenuItemPropsType> = ({good, id, name, price, weight, 
                                 {goodInOrderPreview.count} шт.
                             </Typography>
                         </div>
-                        <Button onClick={() => dispatch(orderActions.addItemToOrder({id, count: 1}))}>
+                        <Button disabled={good.isEmpty} onClick={() => dispatch(orderActions.addItemToOrder({id, count: 1}))}>
                             <Typography variant={'subtitle2'}>
                                 +
                             </Typography>

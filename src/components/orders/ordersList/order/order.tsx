@@ -14,7 +14,7 @@ import {selectIsKitchen} from "../../../../app/app.selector";
 
 type OrderPropsType = {
     name: string
-    createdAt: string | undefined
+    createdAt: Date
     items: MenuType[]
     comment: string
     order: OrdersResponseType

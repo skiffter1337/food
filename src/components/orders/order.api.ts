@@ -18,7 +18,7 @@ export type OrdersResponseType = {
     id: number
     name: string
     status: StatusType
-    createdAt?: string
+    createdAt?: Date
     updatedAt?: string
     items: MenuType[]
     comment: string
