@@ -38,7 +38,7 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
     const onSubmit = handleSubmit(data => {
 
         const modalValuesCopy = {...modalValues}
-        const editedOrder=  modalValuesCopy.items = modalValuesCopy.items.map((item, index) => ({
+        modalValuesCopy.items = modalValuesCopy.items.map((item, index) => ({
             ...item,
             count: data.count[index],
         }))
