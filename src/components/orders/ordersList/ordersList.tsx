@@ -35,14 +35,14 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
         const newUniqueIds = uniqueIds.filter(id => !uniqueOrderIds.includes(id))
 
         if (newUniqueIds.length > 0 && isKitchen) {
-            const audioElement = document.getElementById("notificationSound") as HTMLAudioElement
+            const audioElement = document.getElementById('notificationSound') as HTMLAudioElement
 
             if (audioElement) {
                 audioElement.play()
                     .then(() => {
                     })
                     .catch(error => {
-                        console.error("Ошибка воспроизведения звука: ", error)
+                        console.error('Ошибка воспроизведения звука: ', error)
                     });
 
                 setUniqueOrderIds([...uniqueOrderIds, ...newUniqueIds])
@@ -66,9 +66,8 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
             return true
         })
         .filter((el) => el.items.length !== 0)
-        .reverse()
         .filter((el) =>
-            isKitchen ? el.status === "created" : isCashier ? el.status === "readyForPickup" : el
+            isKitchen ? el.status === 'created' : isCashier ? el.status === 'readyForPickup' || el.status === 'preparing' : el
         )
         .map((order) => <Order
                 key={order.id}
@@ -82,7 +81,7 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
         );
     return (
         <>
-            <audio id="notificationSound" src={NEWORDER} preload="auto" autoPlay={false}/>
+            <audio id='notificationSound' src={NEWORDER} preload='auto' autoPlay={false}/>
             {filteredOrders.length !== 0 ?
                 <div className={s.orders_list}>
                     {filteredOrders}

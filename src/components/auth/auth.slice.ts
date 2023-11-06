@@ -16,9 +16,13 @@ export const login = createAppAsyncThunk<{ isLoggedIn: boolean }, LoginParamsTyp
             dispatch(appThunks.initializeApp())
             toast.success('Вы авторизовались!', toastSuccess)
             return {isLoggedIn: true}
-        } catch (err) {
-            toast.error('Неверный логин или пароль', toastError)
-            return {isLoggedIn: false}
+        } catch (err: any) {
+            if (err.response) {
+                toast.error(err.response.data.message, toastError);
+            } else {
+                toast.error('Произошла неизвестная ошибка', toastError);
+            }
+            return { isLoggedIn: false };
         }
     }
 );

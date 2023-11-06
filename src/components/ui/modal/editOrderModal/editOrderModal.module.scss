@@ -1,0 +1,10 @@
+.item {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 10px;
+
+  .delete {
+    flex: 1;
+    align-self: end;
+  }
+}

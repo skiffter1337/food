@@ -31,9 +31,9 @@ const sendOrderToKitchen = createAppAsyncThunk<null, OrdersItemType>('orders/sen
         return null
     }
 )
-const changeOrderStatus = createAppAsyncThunk<OrdersResponseType, OrdersResponseType>('orders/changeOrderStatus',
+const changeOrder = createAppAsyncThunk<OrdersResponseType, OrdersResponseType>('orders/changeOrder',
     async (order) => {
-    const res = await ordersApi.changeOrderStatus(order)
+    const res = await ordersApi.changeOrder(order)
     return res.data
     }
 )
@@ -104,9 +104,10 @@ const slice = createSlice({
             .addCase(sendOrderToKitchen.fulfilled, (state, action) => {
                 return {...state, orderPreview: []}
             })
-            .addCase(changeOrderStatus.fulfilled, (state, action) => {
+            .addCase(changeOrder.fulfilled, (state, action) => {
                 const index = state.orders.findIndex(order => order.id === action.payload.id)
-                if (index !== -1) state.orders[index].status = action.payload.status
+                debugger
+                if (index !== -1) state.orders[index] = action.payload
             })
     }
 })
@@ -114,4 +115,4 @@ const slice = createSlice({
 export const ordersSlice = slice.reducer
 export const orderActions = slice.actions
 
-export const orderThunks = {sendOrderToKitchen, getOrdersLongPolling, stopFetchingOrders, getOrders, changeOrderStatus}
+export const orderThunks = {sendOrderToKitchen, getOrdersLongPolling, stopFetchingOrders, getOrders, changeOrderStatus: changeOrder}

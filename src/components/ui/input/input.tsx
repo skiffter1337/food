@@ -116,12 +116,12 @@ export const Input:FC<InputPropsType> = ({
                         {...rest}
                     />
                     {!!iconEnd && <span className={s.icon_end}>{iconEnd}</span>}
+                    {showError && (
+                        <Typography variant={'error'} className={s.error_message}>
+                            {errorMessage}
+                        </Typography>
+                    )}
                 </div>
-                {showError && (
-                    <Typography variant={'error'} className={s.error_message}>
-                        {errorMessage}
-                    </Typography>
-                )}
             </div>
         </div>
     )

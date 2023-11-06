@@ -15,7 +15,7 @@ export type MenuType = {
     categoryId: number
     createdAt?: Date
     updatedAt?: string
-    count?: number
+    count: number
 }
 
 type MenuItemType = {

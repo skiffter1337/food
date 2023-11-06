@@ -9,7 +9,7 @@ export const ordersApi = {
     getOrders() {
         return instance.get<OrdersResponseType>('orders')
     },
-    changeOrderStatus(order: OrdersResponseType) {
+    changeOrder(order: OrdersResponseType) {
         return instance.put(`orders/${order.id}`, order)
     }
 }
@@ -23,5 +23,6 @@ export type OrdersResponseType = {
     items: MenuType[]
     comment: string
     total_price?: number
+    isEdit: boolean
 }
-export type StatusType = 'created' | 'readyForPickup' | 'finished'
+export type StatusType = 'created' | 'preparing' | 'readyForPickup'  | 'finished'

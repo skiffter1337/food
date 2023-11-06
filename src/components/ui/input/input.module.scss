@@ -92,8 +92,8 @@
 }
 
 .error_message {
-  margin-top: 8px;
-  margin-left: 1px;
+  position: absolute;
+  bottom: -25px;
   color: var(--color-danger-300);
 }
 
