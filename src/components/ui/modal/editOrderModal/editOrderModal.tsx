@@ -22,7 +22,7 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
     const menu = useAppSelector(selectMenu)
     const [selectedMenuItemId, setSelectedMenuItemId] = useState<number | null>(null)
     const [modalValues, setModalValues] = useState<OrdersResponseType>(order)
-    const {changeOrderStatus} = useActions(orderThunks)
+    const {changeOrder} = useActions(orderThunks)
     const [isOpen, setIsOpen] = useState(false)
     const addItemToOrder: MouseEventHandler<HTMLButtonElement> = (e) => {
         e.preventDefault()
@@ -42,7 +42,7 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
             ...item,
             count: data.count[index],
         }))
-       changeOrderStatus({...modalValuesCopy, comment: data.comment})
+        changeOrder({...modalValuesCopy, comment: data.comment})
         reset()
         setIsOpen(false)
     })

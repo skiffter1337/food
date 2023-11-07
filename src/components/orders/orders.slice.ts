@@ -115,4 +115,4 @@ const slice = createSlice({
 export const ordersSlice = slice.reducer
 export const orderActions = slice.actions
 
-export const orderThunks = {sendOrderToKitchen, getOrdersLongPolling, stopFetchingOrders, getOrders, changeOrderStatus: changeOrder}
+export const orderThunks = {sendOrderToKitchen, getOrdersLongPolling, stopFetchingOrders, getOrders, changeOrder}

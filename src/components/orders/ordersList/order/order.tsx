@@ -25,7 +25,7 @@ type OrderPropsType = {
 export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, order, status}) => {
 
     const isKitchen = useAppSelector(selectIsKitchen)
-    const {changeOrderStatus} = useActions(orderThunks)
+    const {changeOrder} = useActions(orderThunks)
     return (
         <div className={`${s.order} ${order.isEdit ? s.edited : ''} ${order.status === 'readyForPickup' ? s.readyForPickup : ''}`}>
             <div className={s.header}>
@@ -61,7 +61,7 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
                     {status !== 'finished' ?
                         <>
                     {status === 'created' ?
-                        <Button variant={'primary'} onClick={() => changeOrderStatus({...order, status: 'preparing'})}>
+                        <Button variant={'primary'} onClick={() => changeOrder({...order, status: 'preparing'})}>
                             <Typography variant={'subtitle2'}>
                                 В работу
                             </Typography>
@@ -80,7 +80,7 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
                             />
                             :
                             <Button variant={'primary'}
-                                    onClick={() => changeOrderStatus({...order, status: 'finished'})}>
+                                    onClick={() => changeOrder({...order, status: 'finished'})}>
                                 <Typography variant={'subtitle2'}>
                                     Выдать
                                 </Typography>

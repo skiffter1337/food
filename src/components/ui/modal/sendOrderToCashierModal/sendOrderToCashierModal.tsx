@@ -16,12 +16,12 @@ type SendOrderToCashierModalType = {
 export const SendOrderToCashierModal: FC<SendOrderToCashierModalType> = ({width, trigger, order}) => {
 
     const [isOpen, setIsOpen] = useState(false)
-    const {changeOrderStatus} = useActions(orderThunks)
+    const {changeOrder} = useActions(orderThunks)
 
     const onOpenChange = () => setIsOpen(!isOpen)
 
     const sendOrderToCashierHandler = () => {
-        changeOrderStatus({...order, status: 'readyForPickup'})
+        changeOrder({...order, status: 'readyForPickup'})
         setIsOpen(false)
     }
     return (
