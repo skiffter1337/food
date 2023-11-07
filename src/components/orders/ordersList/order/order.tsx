@@ -66,7 +66,7 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
                                 В работу
                             </Typography>
                         </Button>
-                        : status === 'preparing' && isKitchen ?
+                        : status === 'preparing' ?
                             <SendOrderToCashierModal
                                 width={'narrow'}
                                 trigger={
