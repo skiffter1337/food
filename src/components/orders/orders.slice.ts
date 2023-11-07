@@ -1,6 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {createAppAsyncThunk} from "../../common/utils/create-app-async-thunk";
 import {ordersApi, OrdersResponseType, StatusType} from "./order.api";
+import {toast} from "react-toastify";
+import {toastSuccess} from "../../helpers/toastVariants/success/success";
+import {toastError} from "../../helpers/toastVariants/error/error";
 
 const initialState: OrdersType = {
     orderPreview: [],
@@ -23,8 +26,6 @@ export type OrdersItemType = {
 }
 
 
-
-
 const sendOrderToKitchen = createAppAsyncThunk<null, OrdersItemType>('orders/sendOrderToKitchen',
     async (order) => {
         const res = await ordersApi.sendOrderToKitchen(order)
@@ -33,8 +34,8 @@ const sendOrderToKitchen = createAppAsyncThunk<null, OrdersItemType>('orders/sen
 )
 const changeOrder = createAppAsyncThunk<OrdersResponseType, OrdersResponseType>('orders/changeOrder',
     async (order) => {
-    const res = await ordersApi.changeOrder(order)
-    return res.data
+        const res = await ordersApi.changeOrder(order)
+        return res.data
     }
 )
 
@@ -64,11 +65,20 @@ const getOrders = createAppAsyncThunk('orders/getOrders',
     async (_, {dispatch}) => {
         const res = await ordersApi.getOrders()
         dispatch(orderActions.setOrders(res.data))
-         dispatch(getOrdersLongPolling())
+        dispatch(getOrdersLongPolling())
     }
 )
 
-
+const deleteOrder = createAppAsyncThunk<number, number>('order/deleteOrder',
+    async (id) => {
+      try {
+          const res = await ordersApi.deleteOrder(id)
+          toast.success('Заказ удален', toastSuccess)
+          return res.data.id
+      } catch (err) {
+          toast.error('Что-то пошло не так', toastError)
+      }
+    })
 const slice = createSlice({
     name: 'orders',
     initialState,
@@ -97,7 +107,7 @@ const slice = createSlice({
         },
         setOrders: (state, action) => {
             state.orders = action.payload
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -109,10 +119,16 @@ const slice = createSlice({
                 debugger
                 if (index !== -1) state.orders[index] = action.payload
             })
+            .addCase(deleteOrder.fulfilled, (state, action) => {
+                const index = state.orders.findIndex(
+                    (order) => order.id === action.payload
+                )
+                if (index !== -1) state.orders.splice(index, 1)
+            })
     }
 })
 
 export const ordersSlice = slice.reducer
 export const orderActions = slice.actions
 
-export const orderThunks = {sendOrderToKitchen, getOrdersLongPolling, stopFetchingOrders, getOrders, changeOrder}
+export const orderThunks = {sendOrderToKitchen, getOrdersLongPolling, stopFetchingOrders, getOrders, changeOrder, deleteOrder}

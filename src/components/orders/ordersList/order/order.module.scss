@@ -41,7 +41,9 @@
       }
     }
 
-    .edit {
+.manageOrder {
+  display: flex;
+  gap: 5px;
       .btnWrapper {
         cursor: pointer;
         display: flex;
@@ -62,8 +64,8 @@
         &:focus-within {
           background-color: var(--color-dark-100);
         }
-
       }
+
     }
   }
 

@@ -12,6 +12,8 @@ import {useAppSelector} from "../../../../hooks/useAppSelector";
 import {selectIsKitchen} from "../../../../app/app.selector";
 import {EditOutlined} from "../../../../images/icons/editOutlined/editOutlined";
 import {EditOrderModal} from "../../../ui/modal/editOrderModal/editOrderModal";
+import {DeleteEntityModal} from "../../../ui/modal/deleteEntityModal/deleteEntityModal";
+import {TrashOutlined} from "../../../../images/icons/trashOutlined/trashOutlined";
 
 
 type OrderPropsType = {
@@ -25,9 +27,10 @@ type OrderPropsType = {
 export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, order, status}) => {
 
     const isKitchen = useAppSelector(selectIsKitchen)
-    const {changeOrder} = useActions(orderThunks)
+    const {changeOrder, deleteOrder} = useActions(orderThunks)
     return (
-        <div className={`${s.order} ${order.isEdit ? s.edited : ''} ${order.status === 'readyForPickup' ? s.readyForPickup : ''}`}>
+        <div
+            className={`${s.order} ${order.isEdit ? s.edited : ''} ${order.status === 'readyForPickup' ? s.readyForPickup : ''}`}>
             <div className={s.header}>
                 <div className={s.info}>
                     <div className={s.top}>
@@ -41,13 +44,20 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
                     </Typography>
                 </div>
                 {(order.status === 'created' || order.status === 'preparing') &&
-                <div className={s.edit}>
-                    <EditOrderModal
-                        width={'wide'}
-                        trigger={<div className={s.btnWrapper}><EditOutlined/></div>}
-                        order={order}
-                    />
-                </div>
+                    <div className={s.manageOrder}>
+                            <EditOrderModal
+                                width={'wide'}
+                                trigger={<div className={s.btnWrapper}><EditOutlined/></div>}
+                                order={order}
+                            />
+                            <DeleteEntityModal
+                                width={'wide'}
+                                trigger={<div className={s.btnWrapper}><TrashOutlined/></div>}
+                                entityId={order.id}
+                                action={deleteOrder}
+                                text={`Удалить заказ ${order.name}`}
+                            />
+                    </div>
                 }
             </div>
             <div className={s.body}>
@@ -57,38 +67,38 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
                 {!isKitchen && <Typography variant={'h3'}>Итого: {order.total_price} руб.</Typography>}
             </div>
 
-                <div className={s.footer}>
-                    {status !== 'finished' ?
-                        <>
-                    {status === 'created' ?
-                        <Button variant={'primary'} onClick={() => changeOrder({...order, status: 'preparing'})}>
-                            <Typography variant={'subtitle2'}>
-                                В работу
-                            </Typography>
-                        </Button>
-                        : status === 'preparing' ?
-                            <SendOrderToCashierModal
-                                width={'narrow'}
-                                trigger={
-                                    <Button variant={'primary'}>
-                                        <Typography variant={'subtitle2'}>
-                                            Заказ готов
-                                        </Typography>
-                                    </Button>
-                                }
-                                order={order}
-                            />
-                            :
-                            <Button variant={'primary'}
-                                    onClick={() => changeOrder({...order, status: 'finished'})}>
+            <div className={s.footer}>
+                {status !== 'finished' ?
+                    <>
+                        {status === 'created' ?
+                            <Button variant={'primary'} onClick={() => changeOrder({...order, status: 'preparing'})}>
                                 <Typography variant={'subtitle2'}>
-                                    Выдать
+                                    В работу
                                 </Typography>
                             </Button>
-                    }
-                        </>
-                        : <Typography variant={'h2'} className={s.finished}>Завершен</Typography>}
-                </div>
+                            : status === 'preparing' ?
+                                <SendOrderToCashierModal
+                                    width={'narrow'}
+                                    trigger={
+                                        <Button variant={'primary'}>
+                                            <Typography variant={'subtitle2'}>
+                                                Заказ готов
+                                            </Typography>
+                                        </Button>
+                                    }
+                                    order={order}
+                                />
+                                :
+                                <Button variant={'primary'}
+                                        onClick={() => changeOrder({...order, status: 'finished'})}>
+                                    <Typography variant={'subtitle2'}>
+                                        Выдать
+                                    </Typography>
+                                </Button>
+                        }
+                    </>
+                    : <Typography variant={'h2'} className={s.finished}>Завершен</Typography>}
+            </div>
 
         </div>
     );

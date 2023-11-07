@@ -11,6 +11,9 @@ export const ordersApi = {
     },
     changeOrder(order: OrdersResponseType) {
         return instance.put(`orders/${order.id}`, order)
+    },
+    deleteOrder(id: number) {
+        return instance.delete(`orders/${id}`)
     }
 }
 
