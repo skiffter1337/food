@@ -60,7 +60,7 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
                 <div className={s.footer}>
                     {status !== 'finished' ?
                         <>
-                    {status === 'created' && isKitchen ?
+                    {status === 'created' ?
                         <Button variant={'primary'} onClick={() => changeOrderStatus({...order, status: 'preparing'})}>
                             <Typography variant={'subtitle2'}>
                                 В работу
