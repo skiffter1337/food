@@ -27,7 +27,7 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
     const isKitchen = useAppSelector(selectIsKitchen)
     const {changeOrderStatus} = useActions(orderThunks)
     return (
-        <div className={`${s.order} ${order.isEdit ? s.edited : ''} ${order.status === 'created' ? s.created : ''}`}>
+        <div className={`${s.order} ${order.isEdit ? s.edited : ''} ${order.status === 'readyForPickup' ? s.readyForPickup : ''}`}>
             <div className={s.header}>
                 <div className={s.info}>
                     <div className={s.top}>

@@ -11,11 +11,11 @@
   min-width: 350px;
   max-width: 450px;
   border: 1px solid var(--color-dark-500);
-  &.created {
-    border: 1px solid var(--color-success-700);
-  }
   &.edited {
     border: 1px solid var(--color-warning-300);
+  }
+  &.readyForPickup {
+    border: 1px solid var(--color-success-700);
   }
   .header {
     white-space: nowrap;
