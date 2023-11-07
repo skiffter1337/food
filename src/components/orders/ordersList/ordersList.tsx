@@ -67,7 +67,7 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
         })
         .filter((el) => el.items.length !== 0)
         .filter((el) =>
-            isKitchen ? el.status === 'created' : isCashier ? el.status === 'readyForPickup' || el.status === 'preparing' : el
+            isKitchen ? el.status === 'created' || el.status === 'preparing' : isCashier ? el.status === 'readyForPickup' || el.status === 'created' : el
         )
         .map((order) => <Order
                 key={order.id}

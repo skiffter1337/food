@@ -6,6 +6,7 @@ import {selectOrders} from "../orders.selector";
 import {TabsType, TabSwitcher} from "../../ui/tabSwitcher/tabSwitcher";
 import {CheckboxItem} from "../../ui/checkbox/checkbox";
 import {OrdersResponseType} from "../order.api";
+import {selectIsCashier, selectIsKitchen} from "../../../app/app.selector";
 
 
 type OrderPanelPropsType = {
@@ -18,6 +19,8 @@ type OrderPanelPropsType = {
 export const OrderPanel: FC<OrderPanelPropsType> = ({setSortedOrders, sortedOrders, isTodayOrdersOnly, setIsTodayOrderOnly}) => {
 
     const orders = useAppSelector(selectOrders)
+    const isKitchen = useAppSelector(selectIsKitchen)
+    const isCashier = useAppSelector(selectIsCashier)
 
     const sortOrderItems: SelectItemsType[] = [
         {
@@ -57,11 +60,11 @@ export const OrderPanel: FC<OrderPanelPropsType> = ({setSortedOrders, sortedOrde
             title: 'Созданные',
             disabled: false
         },
-        // {
-        //     value: '2',
-        //     title: 'Готовятся',
-        //     disabled: false
-        // },
+        {
+            value: 'preparing',
+            title: 'Готовятся',
+            disabled: false
+        },
         {
             value: 'readyForPickup',
             title: 'Готовы к выдаче',
@@ -75,6 +78,7 @@ export const OrderPanel: FC<OrderPanelPropsType> = ({setSortedOrders, sortedOrde
     ]
 
 
+    const tabsByRoles = () => isKitchen ? tabs.filter(tab => tab.value !== 'readyForPickup' && tab.value !== 'finished') : isCashier ? tabs.filter(tab => tab.value !== 'preparing' && tab.value !== 'finished') : tabs
 
     return (
         <>
@@ -91,7 +95,7 @@ export const OrderPanel: FC<OrderPanelPropsType> = ({setSortedOrders, sortedOrde
                     <CheckboxItem label={'Показать сегодняшние заказы'} onChange={() => setIsTodayOrderOnly(!isTodayOrdersOnly)} checked={isTodayOrdersOnly}/>
                     </div>
                     <TabSwitcher
-                        tabs={tabs}
+                        tabs={tabsByRoles()}
                         defaultValue={'all'}
                         callback={(value) => setSortedOrders(orders.filter(order => {
                             if(value === 'all') return order

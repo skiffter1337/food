@@ -27,7 +27,7 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
     const isKitchen = useAppSelector(selectIsKitchen)
     const {changeOrderStatus} = useActions(orderThunks)
     return (
-        <div className={`${s.order} ${order.isEdit ? s.edited : ''}`}>
+        <div className={`${s.order} ${order.isEdit ? s.edited : ''} ${order.status === 'created' ? s.created : ''}`}>
             <div className={s.header}>
                 <div className={s.info}>
                     <div className={s.top}>
@@ -60,13 +60,13 @@ export const Order: FC<OrderPropsType> = ({name, createdAt, items, comment, orde
                 <div className={s.footer}>
                     {status !== 'finished' ?
                         <>
-                    {status === 'created' ?
+                    {status === 'created' && isKitchen ?
                         <Button variant={'primary'} onClick={() => changeOrderStatus({...order, status: 'preparing'})}>
                             <Typography variant={'subtitle2'}>
                                 В работу
                             </Typography>
                         </Button>
-                        : status === 'preparing' ?
+                        : status === 'preparing' && isKitchen ?
                             <SendOrderToCashierModal
                                 width={'narrow'}
                                 trigger={
