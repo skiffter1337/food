@@ -9,6 +9,8 @@ import {NoItems} from "../../ui/noItems/noItems";
 import {selectIsCashier, selectIsKitchen} from "../../../app/app.selector";
 import NEWORDER from './../../../audio/icq.mp3'
 import {OrdersResponseType} from "../order.api";
+import {toast} from "react-toastify";
+import {toastSuccess} from "../../../helpers/toastVariants/success/success";
 
 type OrdersListPropsType = {
     sortedOrders: OrdersResponseType[]
@@ -20,6 +22,7 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
     const isCashier = useAppSelector(selectIsCashier)
     const {getOrders, stopFetchingOrders} = useActions(orderThunks)
     const [uniqueOrderIds, setUniqueOrderIds] = useState<number[]>([])
+    const [previousOrders, setPreviousOrders] = useState(orders)
 
     useEffect(() => {
         getOrders({})
@@ -29,26 +32,32 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
     }, [])
 
     useEffect(() => {
-        if (orders.length === 0) return
+        if(previousOrders.length === 0 || orders.length === 0) return
 
-        const uniqueIds = orders.map(order => order.id)
-        const newUniqueIds = uniqueIds.filter(id => !uniqueOrderIds.includes(id))
+        const newUniqueIds = orders
+            .filter((order) => !previousOrders.some((prevOrder) => prevOrder.id === order.id))
+            .map((order) => order.id)
 
         if (newUniqueIds.length > 0 && isKitchen) {
             const audioElement = document.getElementById('notificationSound') as HTMLAudioElement
 
             if (audioElement) {
-                audioElement.play()
-                    .then(() => {
-                    })
-                    .catch(error => {
-                        console.error('Ошибка воспроизведения звука: ', error)
-                    });
+                audioElement.play().then(() => {}).catch((error) => {
+                    console.error('Ошибка воспроизведения звука: ', error)
+                })
 
-                setUniqueOrderIds([...uniqueOrderIds, ...newUniqueIds])
+                setUniqueOrderIds((prevUniqueOrderIds) => [...prevUniqueOrderIds, ...newUniqueIds])
             }
         }
-    }, [orders, uniqueOrderIds])
+
+        setPreviousOrders(orders)
+
+        if (orders.filter(el => el.status === 'readyForPickup') > previousOrders.filter(el => el.status === 'readyForPickup') && !isKitchen) {
+           debugger
+            toast.success('Новый заказ готов к выдаче', toastSuccess)
+        }
+    }, [orders]);
+
 
 
     const ordersForMap = sortedOrders.length !== 0 ? sortedOrders : orders

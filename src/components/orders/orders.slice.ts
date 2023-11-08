@@ -116,7 +116,6 @@ const slice = createSlice({
             })
             .addCase(changeOrder.fulfilled, (state, action) => {
                 const index = state.orders.findIndex(order => order.id === action.payload.id)
-                debugger
                 if (index !== -1) state.orders[index] = action.payload
             })
             .addCase(deleteOrder.fulfilled, (state, action) => {
