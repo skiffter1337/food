@@ -32,7 +32,7 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
     }, [])
 
     useEffect(() => {
-        if(previousOrders.length === 0 || orders.length === 0) return
+        if(orders.length === 0) return
 
         const newUniqueIds = orders
             .filter((order) => !previousOrders.some((prevOrder) => prevOrder.id === order.id))
@@ -53,7 +53,6 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
         setPreviousOrders(orders)
 
         if (orders.filter(el => el.status === 'readyForPickup') > previousOrders.filter(el => el.status === 'readyForPickup') && !isKitchen) {
-           debugger
             toast.success('Новый заказ готов к выдаче', toastSuccess)
         }
     }, [orders]);
