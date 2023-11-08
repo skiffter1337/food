@@ -67,7 +67,7 @@ export const MenuItem: FC<MenuItemPropsType> = ({good, id, name, price, weight, 
                     Описание: {description ?? '-'}
                 </Typography>
             </div>
-            <div className={s.buttons}>
+            <div className={s.footer}>
                 {isAdmin ? (isEmpty ?
                         <Button variant={'secondary'} onClick={() => editItem({...good, isEmpty: !isEmpty})}>
                             <Typography variant={'subtitle2'}>
