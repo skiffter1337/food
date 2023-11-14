@@ -9,7 +9,7 @@ import {ArrowDown} from "../../../images/icons/arrowDown/arrowDown";
 
 export type SelectItemsType = {
   id: number
-  value: number
+  value: number | string
   title: string
   disabled: boolean
 }

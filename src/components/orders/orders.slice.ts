@@ -69,6 +69,17 @@ const getOrders = createAppAsyncThunk('orders/getOrders',
     }
 )
 
+const getOrdersWithSorting = createAppAsyncThunk('orders/getOrderWithSorting',
+    async (sortingParams: string, {dispatch}) => {
+    try {
+        const res = await ordersApi.getOrderWithSorting(sortingParams)
+        dispatch(orderActions.setOrders(res.data));
+    } catch (err: any) {
+        toast.error(err.data.error, toastError)
+    }
+    }
+)
+
 const deleteOrder = createAppAsyncThunk<number, number>('order/deleteOrder',
     async (id) => {
       try {
@@ -119,9 +130,7 @@ const slice = createSlice({
                 if (index !== -1) state.orders[index] = action.payload
             })
             .addCase(deleteOrder.fulfilled, (state, action) => {
-                const index = state.orders.findIndex(
-                    (order) => order.id === action.payload
-                )
+                const index = state.orders.findIndex(order => order.id === action.payload)
                 if (index !== -1) state.orders.splice(index, 1)
             })
     }
@@ -130,4 +139,4 @@ const slice = createSlice({
 export const ordersSlice = slice.reducer
 export const orderActions = slice.actions
 
-export const orderThunks = {sendOrderToKitchen, getOrdersLongPolling, stopFetchingOrders, getOrders, changeOrder, deleteOrder}
+export const orderThunks = {sendOrderToKitchen, getOrdersLongPolling, stopFetchingOrders, getOrders, changeOrder, deleteOrder, getOrdersWithSorting}

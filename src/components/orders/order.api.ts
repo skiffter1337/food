@@ -9,6 +9,9 @@ export const ordersApi = {
     getOrders() {
         return instance.get<OrdersResponseType>('orders')
     },
+    getOrderWithSorting(sortingParams: string) {
+        return instance.get<OrdersResponseType>(`orders${sortingParams}`)
+    },
     changeOrder(order: OrdersResponseType) {
         return instance.put(`orders/${order.id}`, order)
     },

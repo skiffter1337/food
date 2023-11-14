@@ -24,6 +24,8 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
     const [modalValues, setModalValues] = useState<OrdersResponseType>(order)
     const {changeOrder} = useActions(orderThunks)
     const [isOpen, setIsOpen] = useState(false)
+    const newItem = menu.find(item => item.id === selectedMenuItemId)
+
     const addItemToOrder: MouseEventHandler<HTMLButtonElement> = (e) => {
         e.preventDefault()
         setSelectedMenuItemId(null)
@@ -43,7 +45,6 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
             count: data.count[index],
         }))
         changeOrder({...modalValuesCopy, comment: data.comment})
-        reset()
         setIsOpen(false)
     })
     const mappedMenu: SelectItemsType[] = [{
@@ -60,7 +61,6 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
 
     const onOpenChange = () => setIsOpen(!isOpen)
 
-    const newItem = menu.find(item => item.id === selectedMenuItemId)
 
     const mappedItems = modalValues.items.map((item, index) => {
 

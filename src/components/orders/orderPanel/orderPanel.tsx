@@ -7,6 +7,8 @@ import {TabsType, TabSwitcher} from "../../ui/tabSwitcher/tabSwitcher";
 import {CheckboxItem} from "../../ui/checkbox/checkbox";
 import {OrdersResponseType} from "../order.api";
 import {selectIsCashier, selectIsKitchen} from "../../../app/app.selector";
+import {useActions} from "../../../hooks/useActions";
+import {orderThunks} from "../orders.slice";
 
 
 type OrderPanelPropsType = {
@@ -21,29 +23,31 @@ export const OrderPanel: FC<OrderPanelPropsType> = ({setSortedOrders, sortedOrde
     const orders = useAppSelector(selectOrders)
     const isKitchen = useAppSelector(selectIsKitchen)
     const isCashier = useAppSelector(selectIsCashier)
+    const {getOrdersWithSorting} = useActions(orderThunks)
+
 
     const sortOrderItems: SelectItemsType[] = [
         {
             id: 1,
-            value: 1,
+            value: '?date=asc',
             title: 'Сначала новые',
             disabled: false
         },
         {
             id: 2,
-            value: 2,
+            value: '?date=desc',
             title: 'Сначала старые',
             disabled: false
         },
         {
             id: 3,
-            value: 3,
+            value: '?price=asc',
             title: 'По возрастанию цены',
             disabled: false
         },
         {
             id: 4,
-            value: 4,
+            value: '?price=desc',
             title: 'По убыванию цены',
             disabled: false
         }
@@ -90,7 +94,7 @@ export const OrderPanel: FC<OrderPanelPropsType> = ({setSortedOrders, sortedOrde
                             placeholder={'Сортировка'}
                             size={'large'}
                             selectItems={sortOrderItems}
-                            onSelect={(value) => {}}
+                            onSelect={(value) => getOrdersWithSorting(value)}
                         />
                     <CheckboxItem label={'Показать сегодняшние заказы'} onChange={() => setIsTodayOrderOnly(!isTodayOrdersOnly)} checked={isTodayOrdersOnly}/>
                     </div>
