@@ -1,4 +1,4 @@
-import React, {FC, MouseEventHandler, ReactNode, useState} from 'react';
+import React, {FC, MouseEventHandler, ReactNode, useEffect, useState} from 'react';
 import {Modal} from "../modal";
 import {Typography} from "../../typography/typography";
 import {Button} from "../../button/button";
@@ -22,20 +22,26 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
     const menu = useAppSelector(selectMenu)
     const [selectedMenuItemId, setSelectedMenuItemId] = useState<number | null>(null)
     const [modalValues, setModalValues] = useState<OrdersResponseType>(order)
+    const [itemsCount, setItemsCount] = useState<number[]>(modalValues.items.map(item => item.count));
+
     const {changeOrder} = useActions(orderThunks)
     const [isOpen, setIsOpen] = useState(false)
     const newItem = menu.find(item => item.id === selectedMenuItemId)
-
+    useEffect(() => {
+        setModalValues(order)
+    }, []);
     const addItemToOrder: MouseEventHandler<HTMLButtonElement> = (e) => {
         e.preventDefault()
         setSelectedMenuItemId(null)
-        setModalValues({...modalValues, items: [...modalValues.items, newItem!]})
+        setModalValues({...modalValues, items: [...modalValues.items, {...newItem!, count: 1}]})
     }
     const deleteItemFromOrder = (id: number) => {
         setModalValues({...modalValues, items: modalValues.items.filter(item => item.id !== id)})
     }
-    const itemsCount = () => modalValues.items.map(item => item.count)
-    const {handleSubmit, control, reset} = useEditOrder(itemsCount(), order.comment)
+    useEffect(() => {
+        setItemsCount(modalValues.items.map(item => item.count));
+    }, [modalValues.items]);
+    const {handleSubmit, control, reset} = useEditOrder(itemsCount, modalValues.comment)
 
     const onSubmit = handleSubmit(data => {
 
