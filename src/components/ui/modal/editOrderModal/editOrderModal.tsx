@@ -11,46 +11,55 @@ import {useAppSelector} from "../../../../hooks/useAppSelector";
 import {selectMenu} from "../../../menu/menu.selectors";
 import {useActions} from "../../../../hooks/useActions";
 import {orderThunks} from "../../../orders/orders.slice";
+import {useFieldArray} from "react-hook-form";
+import {MenuType} from "../../../menu/menu.slice";
 
 type EditOrderModalPropsType = {
     width: 'wide' | 'narrow'
     trigger: ReactNode
     order: OrdersResponseType
 }
+
+export type ModalValuesType = {
+    items: MenuType[]
+    comment: string
+}
 export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, order}) => {
 
     const menu = useAppSelector(selectMenu)
     const [selectedMenuItemId, setSelectedMenuItemId] = useState<number | null>(null)
-    const [modalValues, setModalValues] = useState<OrdersResponseType>(order)
-    const [itemsCount, setItemsCount] = useState<number[]>(modalValues.items.map(item => item.count));
+    const [modalValues, setModalValues] = useState<ModalValuesType>({} as ModalValuesType)
+    const [orderName, setOrderName] = useState('')
 
+    useEffect(() => {
+        setModalValues({items: order.items, comment: order.comment})
+        setOrderName(orderName)
+    }, []);
     const {changeOrder} = useActions(orderThunks)
     const [isOpen, setIsOpen] = useState(false)
-    const newItem = menu.find(item => item.id === selectedMenuItemId)
-    useEffect(() => {
-        setModalValues(order)
-    }, []);
+
+    const {handleSubmit, control, reset} = useEditOrder(modalValues)
+    const { fields, append, remove } = useFieldArray({name: 'items', control});
+
     const addItemToOrder: MouseEventHandler<HTMLButtonElement> = (e) => {
         e.preventDefault()
         setSelectedMenuItemId(null)
-        setModalValues({...modalValues, items: [...modalValues.items, {...newItem!, count: 1}]})
+        const newItem = menu.find(item => item.id === selectedMenuItemId)
+        append({id: newItem!.id, name: newItem!.name, count: 1})
     }
+    console.log(fields)
     const deleteItemFromOrder = (id: number) => {
-        setModalValues({...modalValues, items: modalValues.items.filter(item => item.id !== id)})
+        remove(id)
     }
-    useEffect(() => {
-        setItemsCount(modalValues.items.map(item => item.count));
-    }, [modalValues.items]);
-    const {handleSubmit, control, reset} = useEditOrder(itemsCount, modalValues.comment)
 
     const onSubmit = handleSubmit(data => {
-
-        const modalValuesCopy = {...modalValues}
-        modalValuesCopy.items = modalValuesCopy.items.map((item, index) => ({
-            ...item,
-            count: data.count[index],
-        }))
-        changeOrder({...modalValuesCopy, comment: data.comment})
+        console.log(data)
+        // const modalValuesCopy = {...modalValues}
+        // modalValuesCopy.items = modalValuesCopy.items.map((item, index) => ({
+        //     ...item,
+        //     count: data.count[index],
+        // }))
+      changeOrder({...order, items: order.items.flatMap((item, index) => ({...item, count: data.items[index].count})), comment: data.comment})
         setIsOpen(false)
     })
     const mappedMenu: SelectItemsType[] = [{
@@ -62,23 +71,23 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
         id: item.id,
         value: item.id,
         title: item.name,
-        disabled: item.isEmpty || modalValues.items.some(el => el.id === item.id)
+        disabled: item.isEmpty || modalValues.items?.some(el => el.id === item.id)
     }))]
 
     const onOpenChange = () => setIsOpen(!isOpen)
 
 
-    const mappedItems = modalValues.items.map((item, index) => {
+    const mappedItems = fields.map((item, index) => {
 
         return (
             <div key={item.id} className={s.item}>
                 <ControlledInput
                     className={s.field}
-                    id={`count.${item.id}`}
+                    id={`items.${index}`}
                     label={item.name}
                     control={control}
                     type='number'
-                    name={`count.${index}`}
+                    name={`items.${index}.count`}
                     placeholder={'Количество'}
                 />
                 <div className={s.delete}>
@@ -94,7 +103,7 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
     return (
         <Modal.Root
             width={width}
-            title={`Отредактировать заказ № ${order.name}`}
+            title={`Отредактировать заказ № ${orderName}`}
             trigger={trigger}
             isOpen={isOpen}
             onOpenChange={onOpenChange}
