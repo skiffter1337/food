@@ -28,12 +28,10 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
 
     const menu = useAppSelector(selectMenu)
     const [selectedMenuItemId, setSelectedMenuItemId] = useState<number | null>(null)
-    const [modalValues, setModalValues] = useState<ModalValuesType>({} as ModalValuesType)
-    const [orderName, setOrderName] = useState('')
+    const [modalValues, setModalValues] = useState<OrdersResponseType>(order)
 
     useEffect(() => {
-        setModalValues({items: order.items, comment: order.comment})
-        setOrderName(orderName)
+        setModalValues(order)
     }, []);
     const {changeOrder} = useActions(orderThunks)
     const [isOpen, setIsOpen] = useState(false)
@@ -45,21 +43,16 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
         e.preventDefault()
         setSelectedMenuItemId(null)
         const newItem = menu.find(item => item.id === selectedMenuItemId)
+        setModalValues({...modalValues, items: [...modalValues.items, {...newItem!, count: 1}]})
         append({id: newItem!.id, name: newItem!.name, count: 1})
     }
-    console.log(fields)
-    const deleteItemFromOrder = (id: number) => {
-        remove(id)
+    const deleteItemFromOrder = (index: number, itemName: string) => {
+        setModalValues({...modalValues, items: modalValues.items.filter(item => item.name !== itemName)})
+        remove(index)
     }
 
     const onSubmit = handleSubmit(data => {
-        console.log(data)
-        // const modalValuesCopy = {...modalValues}
-        // modalValuesCopy.items = modalValuesCopy.items.map((item, index) => ({
-        //     ...item,
-        //     count: data.count[index],
-        // }))
-      changeOrder({...order, items: order.items.flatMap((item, index) => ({...item, count: data.items[index].count})), comment: data.comment})
+        changeOrder({...modalValues, comment: data.comment, items: modalValues.items.map((item, index) => ({...item, count: data.items[index].count}))})
         setIsOpen(false)
     })
     const mappedMenu: SelectItemsType[] = [{
@@ -91,7 +84,7 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
                     placeholder={'Количество'}
                 />
                 <div className={s.delete}>
-                    <Button fullWidth as={'div'} onClick={() => deleteItemFromOrder(item.id)}>
+                    <Button fullWidth as={'div'} onClick={() => deleteItemFromOrder(index, item.name)}>
                         <Typography variant={'subtitle2'}>
                             Удалить
                         </Typography>
@@ -103,7 +96,7 @@ export const EditOrderModal: FC<EditOrderModalPropsType> = ({width, trigger, ord
     return (
         <Modal.Root
             width={width}
-            title={`Отредактировать заказ № ${orderName}`}
+            title={`Отредактировать заказ № ${order.name}`}
             trigger={trigger}
             isOpen={isOpen}
             onOpenChange={onOpenChange}

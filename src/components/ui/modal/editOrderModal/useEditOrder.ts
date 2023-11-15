@@ -4,6 +4,7 @@ import {z} from 'zod'
 import {useEffect} from "react";
 import {MenuType} from "../../../menu/menu.slice";
 import {ModalValuesType} from "./editOrderModal";
+import {OrdersResponseType} from "../../../orders/order.api";
 
 
 const schema = z.object({
@@ -20,7 +21,7 @@ const schema = z.object({
 
 type Form = z.infer<typeof schema>
 
-export const useEditOrder = (modalValues: ModalValuesType) => {
+export const useEditOrder = (modalValues: OrdersResponseType) => {
     const {handleSubmit, control, reset} = useForm<Form>({
         resolver: zodResolver(schema),
         defaultValues: {
@@ -30,14 +31,6 @@ export const useEditOrder = (modalValues: ModalValuesType) => {
         mode: 'onChange',
 
     })
-
-    useEffect(() => {
-        reset({
-            items: modalValues.items,
-            comment: modalValues.comment
-        });
-    }, [modalValues.items, modalValues.comment, reset]);
-
     return {
         handleSubmit,
         control,
