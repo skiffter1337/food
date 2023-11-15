@@ -4,25 +4,24 @@ import {Order} from "./order/order";
 import {useActions} from "../../../hooks/useActions";
 import {orderThunks} from "../orders.slice";
 import {useAppSelector} from "../../../hooks/useAppSelector";
-import {selectOrders} from "../orders.selector";
+import {selectFilter, selectOrders} from "../orders.selector";
 import {NoItems} from "../../ui/noItems/noItems";
 import {selectIsCashier, selectIsKitchen} from "../../../app/app.selector";
 import NEWORDER from './../../../audio/icq.mp3'
-import {OrdersResponseType} from "../order.api";
 import {toast} from "react-toastify";
 import {toastSuccess} from "../../../helpers/toastVariants/success/success";
 
 type OrdersListPropsType = {
-    sortedOrders: OrdersResponseType[]
     isTodayOrdersOnly: boolean
 }
-export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrdersOnly}) => {
+export const OrdersList: FC<OrdersListPropsType> = ({isTodayOrdersOnly}) => {
     const orders = useAppSelector(selectOrders)
     const isKitchen = useAppSelector(selectIsKitchen)
     const isCashier = useAppSelector(selectIsCashier)
     const {getOrders, stopFetchingOrders} = useActions(orderThunks)
     const [uniqueOrderIds, setUniqueOrderIds] = useState<number[]>([])
     const [previousOrders, setPreviousOrders] = useState(orders)
+    const filter = useAppSelector(selectFilter)
 
     useEffect(() => {
         getOrders({})
@@ -32,7 +31,7 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
     }, [])
 
     useEffect(() => {
-        if(orders.length === 0) return
+        if (orders.length === 0) return
 
         const newUniqueIds = orders
             .filter((order) => !previousOrders.some((prevOrder) => prevOrder.id === order.id))
@@ -42,7 +41,8 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
             const audioElement = document.getElementById('notificationSound') as HTMLAudioElement
 
             if (audioElement) {
-                audioElement.play().then(() => {}).catch((error) => {
+                audioElement.play().then(() => {
+                }).catch((error) => {
                     console.error('Ошибка воспроизведения звука: ', error)
                 })
 
@@ -58,10 +58,24 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
     }, [orders]);
 
 
-
-    const ordersForMap = sortedOrders.length !== 0 ? sortedOrders : orders
+    const filteredOrders = () => {
+        switch (filter) {
+            case 'all':
+                return orders
+            case 'created':
+                return orders.filter(order => order.status === 'created')
+            case 'preparing':
+                return orders.filter(order => order.status === 'preparing')
+            case 'readyForPickup':
+                return orders.filter(order => order.status === 'readyForPickup')
+            case 'finished':
+                return orders.filter(order => order.status === 'finished')
+            default:
+                return orders
+        }
+    }
     const today = new Date()
-    const filteredOrders = ordersForMap
+    const mappedOrders = filteredOrders()
         .filter((order) => {
             if (isTodayOrdersOnly) {
                 const orderDate = new Date(order.createdAt!)
@@ -90,9 +104,9 @@ export const OrdersList: FC<OrdersListPropsType> = ({sortedOrders, isTodayOrders
     return (
         <>
             <audio id='notificationSound' src={NEWORDER} preload='auto' autoPlay={false}/>
-            {filteredOrders.length !== 0 ?
+            {mappedOrders.length !== 0 ?
                 <div className={s.orders_list}>
-                    {filteredOrders}
+                    {mappedOrders}
                 </div>
                 :
                 <NoItems>

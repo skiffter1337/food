@@ -5,14 +5,18 @@ import {toast} from "react-toastify";
 import {toastSuccess} from "../../helpers/toastVariants/success/success";
 import {toastError} from "../../helpers/toastVariants/error/error";
 
+export type FilterType = 'all' | 'created' | 'preparing' | 'readyForPickup' | 'finished'
+
 const initialState: OrdersType = {
     orderPreview: [],
-    orders: []
+    orders: [],
+    filter: 'all'
 }
 
 type OrdersType = {
     orderPreview: OrderPreviewItemType[]
     orders: OrdersResponseType[]
+    filter: FilterType
 }
 
 type OrderPreviewItemType = {
@@ -119,6 +123,9 @@ const slice = createSlice({
         setOrders: (state, action) => {
             state.orders = action.payload
         },
+        setFilter: (state, action) => {
+            state.filter = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
