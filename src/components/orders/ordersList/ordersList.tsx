@@ -4,7 +4,7 @@ import {Order} from "./order/order";
 import {useActions} from "../../../hooks/useActions";
 import {orderThunks} from "../orders.slice";
 import {useAppSelector} from "../../../hooks/useAppSelector";
-import {selectFilter, selectOrders} from "../orders.selector";
+import {selectFilter, selectIsTodayOrdersOnly, selectOrders} from "../orders.selector";
 import {NoItems} from "../../ui/noItems/noItems";
 import {selectIsCashier, selectIsKitchen} from "../../../app/app.selector";
 import NEWORDER from './../../../audio/icq.mp3'
@@ -12,12 +12,13 @@ import {toast} from "react-toastify";
 import {toastSuccess} from "../../../helpers/toastVariants/success/success";
 
 type OrdersListPropsType = {
-    isTodayOrdersOnly: boolean
+
 }
-export const OrdersList: FC<OrdersListPropsType> = ({isTodayOrdersOnly}) => {
+export const OrdersList: FC<OrdersListPropsType> = () => {
     const orders = useAppSelector(selectOrders)
     const isKitchen = useAppSelector(selectIsKitchen)
     const isCashier = useAppSelector(selectIsCashier)
+    const isTodayOrdersOnly = useAppSelector(selectIsTodayOrdersOnly)
     const {getOrders, stopFetchingOrders} = useActions(orderThunks)
     const [uniqueOrderIds, setUniqueOrderIds] = useState<number[]>([])
     const [previousOrders, setPreviousOrders] = useState(orders)

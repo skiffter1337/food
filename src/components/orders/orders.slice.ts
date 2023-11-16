@@ -10,13 +10,15 @@ export type FilterType = 'all' | 'created' | 'preparing' | 'readyForPickup' | 'f
 const initialState: OrdersType = {
     orderPreview: [],
     orders: [],
-    filter: 'all'
+    filter: 'all',
+    isTodayOrdersOnly: true
 }
 
 type OrdersType = {
     orderPreview: OrderPreviewItemType[]
     orders: OrdersResponseType[]
     filter: FilterType
+    isTodayOrdersOnly: boolean
 }
 
 type OrderPreviewItemType = {
@@ -125,6 +127,9 @@ const slice = createSlice({
         },
         setFilter: (state, action) => {
             state.filter = action.payload
+        },
+        setIsTodayOrdersOnly: (state, action) => {
+            state.isTodayOrdersOnly = action.payload
         }
     },
     extraReducers: (builder) => {

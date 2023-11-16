@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import s from './orderPanel.module.scss'
 import {Select, SelectItemsType} from "../../ui/select/select";
 import {useAppSelector} from "../../../hooks/useAppSelector";
-import {selectOrders} from "../orders.selector";
+import {selectIsTodayOrdersOnly, selectOrders} from "../orders.selector";
 import {TabsType, TabSwitcher} from "../../ui/tabSwitcher/tabSwitcher";
 import {CheckboxItem} from "../../ui/checkbox/checkbox";
 import {selectIsCashier, selectIsKitchen} from "../../../app/app.selector";
@@ -12,17 +12,17 @@ import {useAppDispatch} from "../../../hooks/useAppDispatch";
 
 
 type OrderPanelPropsType = {
-    isTodayOrdersOnly: boolean
-    setIsTodayOrderOnly: (isTodayOrdersOnly: boolean) => void
+
 }
 
-export const OrderPanel: FC<OrderPanelPropsType> = ({isTodayOrdersOnly, setIsTodayOrderOnly}) => {
+export const OrderPanel: FC<OrderPanelPropsType> = () => {
 
     const orders = useAppSelector(selectOrders)
     const isKitchen = useAppSelector(selectIsKitchen)
     const isCashier = useAppSelector(selectIsCashier)
+    const isTodayOrdersOnly = useAppSelector(selectIsTodayOrdersOnly)
     const {getOrdersWithSorting} = useActions(orderThunks)
-    const setFilter = orderActions.setFilter
+    const {setFilter, setIsTodayOrdersOnly} = orderActions
     const dispatch = useAppDispatch()
 
     const sortOrderItems: SelectItemsType[] = [
@@ -95,7 +95,7 @@ export const OrderPanel: FC<OrderPanelPropsType> = ({isTodayOrdersOnly, setIsTod
                             selectItems={sortOrderItems}
                             onSelect={(value) => getOrdersWithSorting(value)}
                         />
-                    <CheckboxItem label={'Показать сегодняшние заказы'} onChange={() => setIsTodayOrderOnly(!isTodayOrdersOnly)} checked={isTodayOrdersOnly}/>
+                    <CheckboxItem label={'Показать сегодняшние заказы'} onChange={() => dispatch(setIsTodayOrdersOnly(!isTodayOrdersOnly))} checked={isTodayOrdersOnly}/>
                     </div>
                     <TabSwitcher
                         tabs={tabsByRoles()}
