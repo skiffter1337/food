@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, ElementType } from 'react'
+import {ComponentPropsWithoutRef, ElementType, ForwardedRef, forwardRef} from 'react'
 
 import s from './button.module.scss'
 
@@ -9,10 +9,28 @@ export type ButtonProps<T extends ElementType = 'button'> = {
     className?: string
 } & ComponentPropsWithoutRef<T>
 
-export const Button = <T extends ElementType = 'button'>(props: ButtonProps<T> & Omit<ComponentPropsWithoutRef<T>, keyof ButtonProps<T>>) => {
-    const { variant = 'primary', fullWidth, className, as: Component = 'button', ...rest } = props
+
+const ButtonPolymorph = <T extends  ElementType = 'button'>(props: ButtonProps<T>, ref: any) => {
+    const {
+        variant = 'primary',
+        fullWidth,
+        disabled,
+        className,
+        children,
+        as: Component= 'button',
+        ...restProps
+    } = props
 
     return (
-        <Component className={`${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className}`} {...rest} />
+        <Component className={`${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className}`} {...restProps} ref={ref}>
+            {children}
+        </Component>
     )
 }
+export const Button = forwardRef(ButtonPolymorph) as <T extends ElementType>(
+    props: ButtonProps<T> &
+        Omit<ComponentPropsWithoutRef<T>, keyof  ButtonProps<T>> & {
+        ref?: ForwardedRef<ElementType<T>>
+    }
+) => ReturnType<typeof ButtonPolymorph>
+
