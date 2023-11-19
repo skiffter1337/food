@@ -22,7 +22,7 @@ const ButtonPolymorph = <T extends  ElementType = 'button'>(props: ButtonProps<T
     } = props
 
     return (
-        <Component className={`${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className}`} {...restProps} ref={ref}>
+        <Component className={`${s[variant]} ${fullWidth ? s.fullWidth : ''} ${className}`} {...restProps} disabled={disabled} ref={ref}>
             {children}
         </Component>
     )
