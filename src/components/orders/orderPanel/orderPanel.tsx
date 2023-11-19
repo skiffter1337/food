@@ -42,13 +42,13 @@ export const OrderPanel: FC<OrderPanelPropsType> = () => {
             id: 3,
             value: '?price=asc',
             title: 'По возрастанию цены',
-            disabled: false
+            disabled: isKitchen
         },
         {
             id: 4,
             value: '?price=desc',
             title: 'По убыванию цены',
-            disabled: false
+            disabled: isKitchen
         }
     ];
 
