@@ -36,13 +36,11 @@ export const Header = () => {
                 <div className={s.buttons}>
                     {isLoggedIn ?
                         <>
-                            {!isKitchen ?
                                 <Button variant={'link'} as={NavLink} to={'/menu'}>
                                     <Typography variant={'h3'} className={s.button_text}>
                                         Меню
                                     </Typography>
                                 </Button>
-                                : null}
                             <Button variant={'link'} as={NavLink} to={'/orders'}>
                                 <Typography variant={'h3'} className={s.button_text}>
                                     Заказы

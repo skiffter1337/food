@@ -25,7 +25,6 @@ export const MenuList: FC<MenuListType> = ({menu, currentCategoryId, searchText}
         return false
     })
 
-
     return (
         filteredMenu.length ?
             <div className={s.goods}>

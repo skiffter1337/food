@@ -6,7 +6,7 @@ import {useAppDispatch} from "../../../../hooks/useAppDispatch";
 import {orderActions} from "../../../orders/orders.slice";
 import {menuThunks, MenuType} from "../../menu.slice";
 import {useActions} from "../../../../hooks/useActions";
-import {selectIsAdmin} from "../../../../app/app.selector";
+import {selectIsAdmin, selectIsKitchen} from "../../../../app/app.selector";
 import {useAppSelector} from "../../../../hooks/useAppSelector";
 import {EditOutlined} from "../../../../images/icons/editOutlined/editOutlined";
 import {TrashOutlined} from "../../../../images/icons/trashOutlined/trashOutlined";
@@ -28,6 +28,7 @@ export const MenuItem: FC<MenuItemPropsType> = ({good, id, name, price, weight, 
     const dispatch = useAppDispatch()
     const {editItem} = useActions(menuThunks)
     const isAdmin = useAppSelector(selectIsAdmin)
+    const isKitchen = useAppSelector(selectIsKitchen)
     const orderPreview = useAppSelector(selectOrder)
 
     const goodInOrderPreview = orderPreview.find(el => el.id === good.id)
@@ -68,7 +69,7 @@ export const MenuItem: FC<MenuItemPropsType> = ({good, id, name, price, weight, 
                 </Typography>
             </div>
             <div className={s.footer}>
-                {isAdmin ? (isEmpty ?
+                {isAdmin || isKitchen ? (isEmpty ?
                         <Button variant={'secondary'} onClick={() => editItem({...good, isEmpty: !isEmpty})}>
                             <Typography variant={'subtitle2'}>
                                 Активировать
@@ -81,32 +82,38 @@ export const MenuItem: FC<MenuItemPropsType> = ({good, id, name, price, weight, 
                         </Button>)
                     : null
                 }
-                {goodInOrderPreview ?
-                    <div className={`${s.counter} ${good.isEmpty ? s.disabled : ''}`}>
-                        <Button disabled={good.isEmpty} onClick={() => dispatch(orderActions.removeItemFromOrder(good.id))}>
-                            <Typography variant={'subtitle2'}>
-                                -
-                            </Typography>
-                        </Button>
-                        <div className={s.count}>
-                            <Typography variant={'subtitle2'}>
-                                {goodInOrderPreview.count} шт.
-                            </Typography>
-                        </div>
-                        <Button disabled={good.isEmpty} onClick={() => dispatch(orderActions.addItemToOrder({id, count: 1}))}>
-                            <Typography variant={'subtitle2'}>
-                                +
-                            </Typography>
-                        </Button>
-                    </div>
-                    :
-                    <Button disabled={good.isEmpty}
-                            onClick={() => dispatch(orderActions.addItemToOrder({id, count: 1}))}
-                    >
-                        <Typography variant={'subtitle2'}>
-                            В заказ
-                        </Typography>
-                    </Button>
+                {!isKitchen &&
+                    <>
+                        {goodInOrderPreview ?
+                            <div className={`${s.counter} ${good.isEmpty ? s.disabled : ''}`}>
+                                <Button disabled={good.isEmpty}
+                                        onClick={() => dispatch(orderActions.removeItemFromOrder(good.id))}>
+                                    <Typography variant={'subtitle2'}>
+                                        -
+                                    </Typography>
+                                </Button>
+                                <div className={s.count}>
+                                    <Typography variant={'subtitle2'}>
+                                        {goodInOrderPreview.count} шт.
+                                    </Typography>
+                                </div>
+                                <Button disabled={good.isEmpty}
+                                        onClick={() => dispatch(orderActions.addItemToOrder({id, count: 1}))}>
+                                    <Typography variant={'subtitle2'}>
+                                        +
+                                    </Typography>
+                                </Button>
+                            </div>
+                            :
+                            <Button disabled={good.isEmpty}
+                                    onClick={() => dispatch(orderActions.addItemToOrder({id, count: 1}))}
+                            >
+                                <Typography variant={'subtitle2'}>
+                                    В заказ
+                                </Typography>
+                            </Button>
+                        }
+                    </>
                 }
             </div>
         </div>
